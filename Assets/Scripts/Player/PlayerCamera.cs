@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -8,8 +9,8 @@ public class PlayerCamera : MonoBehaviour
         get {return _lookDir;} 
         set {_lookDir = value;}}
     private float _xRotation=0,_yRotation=0;
-
     [SerializeField] private Transform playerOrientation;
+
 
     void Start()
     {
