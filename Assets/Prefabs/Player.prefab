@@ -328,6 +328,7 @@ MonoBehaviour:
   _movementInput: {fileID: 218568760929916930, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
   _lookInput: {fileID: -8683902540707900372, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
   _interactInput: {fileID: 5865256312620877185, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
+  _dropInput: {fileID: 1944949733542216515, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
 --- !u!114 &3995587675138283517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,5 +356,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lerpStrength: 0.01
+  _maxFollowDistance: 5
+  _playerRadius: 1.5
   _interactDistance: 5
-  _hauledItemTransform: {fileID: 0}
+  EquipSlot: {fileID: 0}
+  _hauledItemSlotTransform: {fileID: 0}

@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 5943243444019591022}
   - component: {fileID: 7896975806529148324}
   - component: {fileID: 8254068322172393384}
+  - component: {fileID: 5280706422728885119}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -162,7 +163,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 95
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -241,12 +242,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lookSensitivity: 0.1
   _playerOrientation: {fileID: 0}
+--- !u!114 &5280706422728885119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4443445305750284721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6451999efcc227040abfa82fdf43b0ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerOrientation: {fileID: 0}
   _playerRB: {fileID: 0}
   _bobMovementThreshold: 0.1
   _bobTopDistance: 0.2
-  _bobBottomDistance: 0.1
-  _upBobStrength: 0.003
-  _downBobStrength: 0.003
+  _bobBottomDistance: 0.2
+  _upBobStrength: 0.005
+  _downBobStrength: 0.01
 --- !u!1 &6912848524037182555
 GameObject:
   m_ObjectHideFlags: 0
