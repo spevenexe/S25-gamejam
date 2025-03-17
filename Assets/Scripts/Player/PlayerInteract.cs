@@ -31,17 +31,20 @@ public class PlayerInteract : MonoBehaviour
             
             if(hits.Length == 0) {
                 Target = null;
-                return;
             }
-            RaycastHit minHit = hits[0];
-            float minDistance = hits[0].distance;
-            foreach(RaycastHit h in hits){
-                if(h.distance < minDistance){
-                    minHit = h;
-                    minDistance = h.distance;
+            else
+            {
+                RaycastHit minHit = hits[0];
+                float minDistance = hits[0].distance;
+                foreach(RaycastHit h in hits){
+                    if(h.distance < minDistance){
+                        minHit = h;
+                        minDistance = h.distance;
+                    }
                 }
+                Target = minHit.transform.GetComponent<Interactable>();
             }
-            Target = minHit.transform.GetComponent<Interactable>();
+            EquipSlot.showToolTip(Target);
         }
         // we are carrying something heavy, interacting will drop it
         else
@@ -63,6 +66,7 @@ public class PlayerInteract : MonoBehaviour
             // end-=pivot;
             // Vector3 newPos = Vector3.Slerp(start,end,_lerpStrength) + pivot;
             HauledItem.transform.position = newPos;
+            EquipSlot.showToolTip(null);
         }
     }
 
@@ -107,6 +111,7 @@ public class PlayerInteract : MonoBehaviour
         EquippedItem.transform.SetParent(EquipSlot.transform,false);
         EquippedItem.transform.SetParent(null);
         StartCoroutine(EquipSlot.LerpItem(EquippedItem));
+        EquipSlot.BottomRightText.text = EquippedItem.DropTooltip();
     }
 
     internal void Unequip()
@@ -123,5 +128,6 @@ public class PlayerInteract : MonoBehaviour
         rb.useGravity = true;
         rb.freezeRotation = false;
         EquippedItem = null;
+        EquipSlot.BottomRightText.text = "";
     }
 }

@@ -1,5 +1,7 @@
-using UnityEditor.Callbacks;
-using UnityEngine;
+using Unity.VisualScripting;
+using UnityEditor.VersionControl;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 public class HeavyItem : Item
 {
@@ -19,5 +21,13 @@ public class HeavyItem : Item
         else {
             player.PlayerInteract.Haul(this);
         }
+    }
+
+    public override string MessageTooltip()
+    {
+        string message = base.MessageTooltip();
+
+        message+=" Pick Up "+name;
+        return message;
     }
 }

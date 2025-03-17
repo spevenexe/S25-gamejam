@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 public class Utils
 {
@@ -14,5 +16,22 @@ public class Utils
             f0*start.y + f1*p1.y + f2*p2.y + f3*end.y,
             f0*start.z + f1*p1.z + f2*p2.z + f3*end.z
         );
+    }
+
+    public static string getKeys(PlayerInput PInput,string action)
+    {
+        string message = ""; 
+        InputAction InteractAction = PInput.actions.FindAction(action);
+        ReadOnlyArray<InputBinding> allKeys = InteractAction.bindings;
+        InputBinding mask = InputBinding.MaskByGroup(PInput.currentControlScheme);
+        int i;
+        for(i = 0; i < allKeys.Count-1; i++)
+        {
+            if(mask.Matches(allKeys[i]))
+                message+="["+allKeys[i].ToDisplayString()+"]/ ";
+        }
+        if(mask.Matches(allKeys[i]))
+            message+="["+allKeys[i].ToDisplayString()+"]";
+        return message;
     }
 }

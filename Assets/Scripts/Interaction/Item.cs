@@ -7,4 +7,9 @@ public abstract class Item : Interactable
     {
         rb = GetComponent<Rigidbody>();
     }
+
+    public string DropTooltip()
+    {
+        return Utils.getKeys(PInput,"Drop") + " Drop " + name;
+    }
 }

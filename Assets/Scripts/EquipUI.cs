@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class EquipUI : MonoBehaviour
@@ -6,6 +8,17 @@ public class EquipUI : MonoBehaviour
     [SerializeField] private float _lerpStrength = 0.01f;
     [SerializeField] private float _maxFollowDistance = 5f;
     [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private TMP_Text _centerTooltipText;
+    public TMP_Text BottomRightText;
+
+    internal void showToolTip(Interactable target)
+    {
+        if (target == null) 
+            _centerTooltipText.text = "";
+        else
+            _centerTooltipText.text = target.MessageTooltip();
+    }
+
     internal IEnumerator LerpItem(Item equippedItem)
     {
         while(equippedItem.gameObject.layer == LayerMask.NameToLayer("UI"))

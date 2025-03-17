@@ -7,11 +7,18 @@ public class Player : MonoBehaviour
     private PlayerMovement _playerMovement;
     public PlayerInteract PlayerInteract {get; private set;}
     public PlayerCamera _playerCamera;
-    [SerializeField] private InputActionReference _movementInput,_lookInput,_interactInput,_dropInput;
+    private PlayerInput _playerInput;
+    // [SerializeField] private InputActionReference _movementInput,_lookInput,_interactInput,_dropInput;
+    private InputAction _movementInput,_lookInput,_interactInput,_dropInput;
     void OnEnable()
     {
-        _interactInput.action.performed+=Use;
-        _dropInput.action.performed+=Drop;
+        _playerInput = GetComponent<PlayerInput>();
+        _movementInput = _playerInput.actions.FindAction("Move");
+        _lookInput = _playerInput.actions.FindAction("Look");
+        _interactInput = _playerInput.actions.FindAction("Interact");
+        _dropInput = _playerInput.actions.FindAction("Drop");
+        _interactInput.performed+=Use;
+        _dropInput.performed+=Drop;
     }
 
     private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop();
@@ -25,8 +32,8 @@ public class Player : MonoBehaviour
 
     void OnDisable()
     {
-        _interactInput.action.performed-=Use;
-        _dropInput.action.performed-=Drop;
+        _interactInput.performed-=Use;
+        _dropInput.performed-=Drop;
     }
 
     void Awake()
@@ -35,9 +42,14 @@ public class Player : MonoBehaviour
         PlayerInteract = GetComponent<PlayerInteract>();
     }
 
+    void Start()
+    {
+        Interactable.setPI(_playerInput);
+    }
+
     void Update()
     {
-        _playerCamera.LookDirection = _lookInput.action.ReadValue<Vector2>();
-        _playerMovement.MoveDirection = _movementInput.action.ReadValue<Vector2>();
+        _playerCamera.LookDirection = _lookInput.ReadValue<Vector2>();
+        _playerMovement.MoveDirection = _movementInput.ReadValue<Vector2>();
     }
 }

@@ -1,3 +1,6 @@
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+
 public class EquippableItem : Item
 {
     public override void Interact(Player player)
@@ -12,6 +15,13 @@ public class EquippableItem : Item
         {
             player.PlayerInteract.Equip(this);
         }
+    }
+
+    public override string MessageTooltip()
+    {
+        string message = base.MessageTooltip();
+        message+=" Equip "+name;
+        return message;
     }
 
     // return true if there is a succesful use case
