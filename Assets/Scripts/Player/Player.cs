@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,25 +6,33 @@ public class Player : MonoBehaviour
 {
     private PlayerMovement _playerMovement;
     public PlayerInteract PlayerInteract {get; private set;}
-    [SerializeField] private PlayerCamera _playerCamera;
-    [SerializeField] private InputActionReference _movementInput,_lookInput,_interactInput;
+    public PlayerCamera _playerCamera;
+    [SerializeField] private InputActionReference _movementInput,_lookInput,_interactInput,_dropInput;
     void OnEnable()
     {
         _interactInput.action.performed+=Use;
+        _dropInput.action.performed+=Drop;
     }
 
-    private void Use(InputAction.CallbackContext context) => PlayerInteract.Target?.Interact(this);
+    private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop();
+
+    // private void Use(InputAction.CallbackContext context) => PlayerInteract.Target?.Interact(this);
+    private void Use(InputAction.CallbackContext context) 
+    {
+        Debug.Log(PlayerInteract.Target);
+        PlayerInteract.Target?.Interact(this);
+    }
 
     void OnDisable()
     {
         _interactInput.action.performed-=Use;
+        _dropInput.action.performed-=Drop;
     }
 
-    void Start()
+    void Awake()
     {
         _playerMovement = GetComponent<PlayerMovement>();
         PlayerInteract = GetComponent<PlayerInteract>();
-        PlayerInteract.PCam = _playerCamera;
     }
 
     void Update()

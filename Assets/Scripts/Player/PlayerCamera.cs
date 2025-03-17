@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
@@ -9,12 +8,14 @@ public class PlayerCamera : MonoBehaviour
         get {return _lookDir;} 
         set {_lookDir = value;}}
     private float _xRotation=0,_yRotation=0;
-    [SerializeField] private Transform playerOrientation;
+    [SerializeField] private Transform _playerOrientation;
 
-
+    private ViewBobbing _viewBobber;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        _viewBobber = GetComponent<ViewBobbing>();
+        _viewBobber.PlayerOrientation = _playerOrientation;
     }
 
     void Update()
@@ -24,6 +25,8 @@ public class PlayerCamera : MonoBehaviour
         _yRotation +=_lookDir.x*_lookSensitivity;
 
         transform.rotation = Quaternion.Euler(_xRotation,_yRotation,0f);
-        playerOrientation.rotation = Quaternion.Euler(0f,_yRotation,0f);
+        _playerOrientation.rotation = Quaternion.Euler(0f,_yRotation,0f);
+
+        _viewBobber.Bob();
     }
 }

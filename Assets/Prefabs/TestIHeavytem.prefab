@@ -13,10 +13,9 @@ GameObject:
   - component: {fileID: 2165814200203370457}
   - component: {fileID: 271343702402326904}
   - component: {fileID: 863005651170551072}
-  - component: {fileID: 2217576879290972653}
   - component: {fileID: 8356593481978182597}
   m_Layer: 3
-  m_Name: TestItem
+  m_Name: TestIHeavytem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123,27 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed55191b4baa2845b4438a3f5ceb488, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &2217576879290972653
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381996545991231043}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8356593481978182597
 Rigidbody:
   m_ObjectHideFlags: 0

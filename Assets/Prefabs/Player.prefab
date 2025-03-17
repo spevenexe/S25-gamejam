@@ -80,7 +80,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3835572718569636744}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -356,5 +356,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lerpStrength: 0.01
   _interactDistance: 5
-  PCam: {fileID: 0}
-  _pocketTransform: {fileID: 0}
+  _hauledItemTransform: {fileID: 0}
