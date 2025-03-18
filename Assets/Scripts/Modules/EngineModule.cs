@@ -4,17 +4,18 @@ using UnityEngine.Timeline;
 
 public class EngineModule : BaseModule
 {
-    public override void BreakModule(Player player)
-    {
-        // some setup
-        StartCoroutine(PlayFixingMinigame(player));
-    }
-
-    public override void FixModule(Player player)
+    protected override void BreakModule()
     {
     }
 
-    protected override IEnumerator PlayFixingMinigame(Player player)
+    protected override void FixModule()
+    {
+        // special code for fixing engine
+
+        base.FixModule();
+    }
+
+    protected override IEnumerator PlayFixingMinigame()
     {
         while(true /* the engine is broken*/)
         {
