@@ -40,15 +40,12 @@ public class MidGame : MonoBehaviour
 	private float _breachTimer;
 	private float _breachTimerAveragePercentage = 0.5f;
 
-	// game state variables (not used yet)
-	private bool _isEarlyGame;
-	private bool _isLateGame;
-
-	// other variables
-	public GameObject _owner;
-
-	//time to reach moon should decrease as the game progresses
-	private float _timeToReachMoon;
+    // game state variables (not used yet)
+    private bool _isEarlyGame;
+    private bool _isLateGame;
+    
+    // other variables
+    public GameObject _owner;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -63,68 +60,50 @@ public class MidGame : MonoBehaviour
 
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-		// increase timer by deltaTime
-		_timer += Time.deltaTime;
+    // Update is called once per frame
+    void Update()
+    {
+        // increase timer by deltaTime
+        _timer += Time.deltaTime;
 
-		// update timerProgress
-		_timerProgress = _timer / _totalMidGameTime;
+        // update timerProgress
+        _timerProgress = _timer / _totalMidGameTime;
 
-		// decrease engineTimer by deltaTime
-		if (_isEngineFixed)
-		{
-			_engineTimer -= Time.deltaTime;
-			// Debug.Log(_engineTimer);
-			// if engineTimer is below 0, break engine
-			if (_engineTimer <= 0)
-			{
-				// Debug.Log("Engine Failure.");
-				// break engine code here
-				BreakEngine();
+        // decrease engineTimer by deltaTime
+        if (_isEngineFixed)
+        {
+            _engineTimer -= Time.deltaTime;
+            // Debug.Log(_engineTimer);
+            // if engineTimer is below 0, break engine
+            if (_engineTimer <= 0)
+            {
+                _isEngineFixed = false;
+                // Debug.Log("Engine Failure.");
+                // break engine code here
+            }
+        }
 
-			}
-		}
+        // decrease breachTimer by deltaTime
+        _breachTimer -= Time.deltaTime;
+        // if _breachTimer is below 0, create breach and start new timer
+        if (_breachTimer <= 0)
+        {
+            // code to create hull breach
+            StartNewBreachTimer();
+        }
 
-		//if engine is broken, time to reach moon should remain constant
-		if (!_isEngineFixed)
-		{
-			timeToReachMoon = _timeToReachMoon;
-		}
-		//if nav is broken, time to reach moon should increase
-		else if (_isNavFixed)
-		{
-			timeToReachMoon = _timeToReachMoon * (1 + _timerProgress);
+        // run mechanic progressions
+        NavProgression();
+        EngineProgression();
+        HullBreachProgression();
 
-		}
-		//if nav is fixed, time to reach moon should decrease
-		else
-		{
-			timeToReachMoon = _timeToReachMoon * (1 - _timerProgress);
-		}
-
-		// decrease breachTimer by deltaTime
-		_breachTimer -= Time.deltaTime;
-		// if _breachTimer is below 0, create breach and start new timer
-		if (_breachTimer <= 0)
-		{
-			// code to create hull breach
-			StartNewBreachTimer();
-		}
-
-		// run mechanic progressions
-		NavProgression();
-		EngineProgression();
-		HullBreachProgression();
-
-		// start EndGame
-		if (_timer >= _totalMidGameTime)
-		{
-			StartEndGame();
-		}
-
-	}
+        // start EndGame
+        if (_timer >= _totalMidGameTime)
+        {
+            StartEndGame();
+        }
+        
+    }
 
 	private void NavProgression()
 	{
@@ -150,11 +129,11 @@ public class MidGame : MonoBehaviour
 		// Debug.Log(_breachMaxTime);
 	}
 
-	public void FixedEngine()
-	{
-		_engineTimer = Random.Range(_engineLowRange, _engineHighRange);
-		_isEngineFixed = true;
-	}
+    public void FixedEngine()
+    {
+        _engineTimer = Random.Range(_engineLowRange, _engineHighRange);
+        _isEngineFixed = true;
+    }
 
 	private void StartEndGame()
 	{
@@ -221,9 +200,9 @@ public class MidGame : MonoBehaviour
 		// adjust breachTimerAveragePercentage to new average
 		_breachTimerAveragePercentage = Mathf.Abs(_breachTimerPercentage - 1);
 
-		// Debug.Log(_breachTimer);
-		// Debug.Log(_breachNewTimerPercentage);
-		// Debug.Log(_breachTimerPercentage);
-		// Debug.Log(_breachTimerAveragePercentage);
-	}
+        // Debug.Log(_breachTimer);
+        // Debug.Log(_breachNewTimerPercentage);
+        // Debug.Log(_breachTimerPercentage);
+        // Debug.Log(_breachTimerAveragePercentage);
+    }
 }
