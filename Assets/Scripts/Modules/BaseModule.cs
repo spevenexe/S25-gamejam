@@ -11,5 +11,5 @@ public abstract class BaseModule : MonoBehaviour
 
     public abstract void BreakModule(Player player);
     public abstract void FixModule(Player player);
-    public abstract IEnumerator PlayFixingMinigame(Player player);
+    protected abstract IEnumerator PlayFixingMinigame(Player player);
 }

@@ -14,7 +14,7 @@ public class EngineModule : BaseModule
     {
     }
 
-    public override IEnumerator PlayFixingMinigame(Player player)
+    protected override IEnumerator PlayFixingMinigame(Player player)
     {
         while(true /* the engine is broken*/)
         {
