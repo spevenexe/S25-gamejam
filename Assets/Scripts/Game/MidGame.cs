@@ -4,240 +4,226 @@ using UnityEngine;
 public class MidGame : MonoBehaviour
 {
 
-    /*
+	/*
     FixedEngine() will be called by the engine room when engine is fixed.
-    ModuleEjected() will be called when a module gets ejected.
     */
 
-    // mechanic scripts to access
-    // [SerializeField] private ScriptMechanic _scriptMechanic
+	// mechanic scripts to access
+	// [SerializeField] private ScriptMechanic _scriptMechanic
 
-    // timer variables
-    [SerializeField] private float _totalMidGameTime;
-    [HideInInspector] public float _timer;
-    private float _timerProgress = 0;
+	// timer variables
+	[SerializeField] private float _totalMidGameTime;
+	[HideInInspector] public float _timer;
+	private float _timerProgress = 0;
 
-    // navigation mechanic variables
-    [SerializeField] private float _navStartMultiplier;
-    [SerializeField] private float _navEndMultiplier;
-    private float _navMultiplier;
+	// navigation mechanic variables
+	[SerializeField] private float _navStartMultiplier;
+	[SerializeField] private float _navEndMultiplier;
+	private float _navMultiplier;
+	private bool _isNavFixed = true;
 
-    // engine mechanic variables
-    [SerializeField] private float _engineStartLowRange;
-    [SerializeField] private float _engineStartHighRange;
-    [SerializeField] private float _engineEndLowRange;
-    [SerializeField] private float _engineEndHighRange;
-    private float _engineLowRange;
-    private float _engineHighRange;
-    private float _engineTimer;
-    private bool _isEngineFixed = true;
+	// engine mechanic variables
+	[SerializeField] private float _engineStartLowRange;
+	[SerializeField] private float _engineStartHighRange;
+	[SerializeField] private float _engineEndLowRange;
+	[SerializeField] private float _engineEndHighRange;
+	private float _engineLowRange;
+	private float _engineHighRange;
+	private float _engineTimer;
+	private bool _isEngineFixed = true;
 
-    // hull breach mechanic variables
-    [SerializeField] private float _breachStartMaxTime;
-    [SerializeField] private float _breachEndMaxTime;
-    private float _breachMaxTime;
-    [SerializeField] private float _breachMinTime;
-    private float _breachTimer;
-    private float _breachTimerAveragePercentage = 0.5f;
+	// hull breach mechanic variables
+	[SerializeField] private float _breachStartMaxTime;
+	[SerializeField] private float _breachEndMaxTime;
+	private float _breachMaxTime;
+	[SerializeField] private float _breachMinTime;
+	private float _breachTimer;
+	private float _breachTimerAveragePercentage = 0.5f;
 
-    // game state variables (not used yet)
-    private bool _isEarlyGame;
-    private bool _isLateGame = false;
+	// game state variables (not used yet)
+	private bool _isEarlyGame;
+	private bool _isLateGame;
 
-    // late game variables
-    [SerializeField] private float _maxTimeBetweenEjections;
-    [SerializeField] private float _minTimeBetweenEjections;
-    private float _ejectionTimer;
-    private bool _isEjectionTimerRunning = false;
+	// other variables
+	public GameObject _owner;
 
-    // other variables
-    public GameObject _owner;
+	//time to reach moon should decrease as the game progresses
+	private float _timeToReachMoon;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        // create values for progression variables
-        NavProgression();
-        EngineProgression();
-        HullBreachProgression();
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
+	{
+		// create values for progression variables
+		NavProgression();
+		EngineProgression();
+		HullBreachProgression();
 
-        // start engine fixed
-        FixedEngine();
+		// start engine fixed
+		FixedEngine();
 
-    }
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        // don't update if isLateGame
-        if (!_isLateGame)
-        {
-            // increase timer by deltaTime
-            _timer += Time.deltaTime;
+	// Update is called once per frame
+	void Update()
+	{
+		// increase timer by deltaTime
+		_timer += Time.deltaTime;
 
-            // update timerProgress
-            _timerProgress = _timer / _totalMidGameTime;
-        }
+		// update timerProgress
+		_timerProgress = _timer / _totalMidGameTime;
 
-        // decrease engineTimer by deltaTime
-        if (_isEngineFixed)
-        {
-            _engineTimer -= Time.deltaTime;
-            // Debug.Log(_engineTimer);
-            // if engineTimer is below 0, break engine
-            if (_engineTimer <= 0)
-            {
-                _isEngineFixed = false;
-                // Debug.Log("Engine Failure.");
-                BreakEngine();
-            }
-        }
+		// decrease engineTimer by deltaTime
+		if (_isEngineFixed)
+		{
+			_engineTimer -= Time.deltaTime;
+			// Debug.Log(_engineTimer);
+			// if engineTimer is below 0, break engine
+			if (_engineTimer <= 0)
+			{
+				// Debug.Log("Engine Failure.");
+				// break engine code here
+				BreakEngine();
 
-        // decrease breachTimer by deltaTime
-        _breachTimer -= Time.deltaTime;
-        // if _breachTimer is below 0, create breach and start new timer
-        if (_breachTimer <= 0)
-        {
-            CreateHullBreach();
-            StartNewBreachTimer();
-        }
+			}
+		}
 
-        // decrease ejectionTimer by deltaTime
-        if (_isEjectionTimerRunning)
-        {
-            _ejectionTimer -= Time.deltaTime;
-            // if _ejectionTime is below 0, stop timer and start ejection problem
-            if (_ejectionTimer <= 0)
-            {
-                _isEjectionTimerRunning = false;
-                StartEjectionProblem();
-            }
-        }
+		//if engine is broken, time to reach moon should remain constant
+		if (!_isEngineFixed)
+		{
+			timeToReachMoon = _timeToReachMoon;
+		}
+		//if nav is broken, time to reach moon should increase
+		else if (_isNavFixed)
+		{
+			timeToReachMoon = _timeToReachMoon * (1 + _timerProgress);
 
-        // don't update if isLateGame
-        if (!_isLateGame)
-        {
-            // run mechanic progressions
-            NavProgression();
-            EngineProgression();
-            HullBreachProgression();
-        }
+		}
+		//if nav is fixed, time to reach moon should decrease
+		else
+		{
+			timeToReachMoon = _timeToReachMoon * (1 - _timerProgress);
+		}
 
-        // start LateGame
-        if (_timer >= _totalMidGameTime && !_isLateGame)
-        {
-            StartLateGame();
-        }
-        
-    }
+		// decrease breachTimer by deltaTime
+		_breachTimer -= Time.deltaTime;
+		// if _breachTimer is below 0, create breach and start new timer
+		if (_breachTimer <= 0)
+		{
+			// code to create hull breach
+			StartNewBreachTimer();
+		}
 
-    private void NavProgression()
-    {
-        // update navMultiplier
-        _navMultiplier = _timerProgress * (_navEndMultiplier - _navStartMultiplier) + _navStartMultiplier;
-        // Debug.Log(_navMultiplier);
-    }
+		// run mechanic progressions
+		NavProgression();
+		EngineProgression();
+		HullBreachProgression();
 
-    private void EngineProgression()
-    {
-        // update engineRanges
-        _engineLowRange = _timerProgress * (_engineEndLowRange - _engineStartLowRange) + _engineStartLowRange;
-        _engineHighRange = _timerProgress * (_engineEndHighRange - _engineStartHighRange) + _engineStartHighRange;
-        // Debug.Log(_engineLowRange);
-        // Debug.Log(_engineHighRange);
+		// start EndGame
+		if (_timer >= _totalMidGameTime)
+		{
+			StartEndGame();
+		}
 
-    }
+	}
 
-    private void HullBreachProgression()
-    {
-        // update breachMaxTime
-        _breachMaxTime = _timerProgress * (_breachEndMaxTime - _breachStartMaxTime) + _breachStartMaxTime;
-        // Debug.Log(_breachMaxTime);
-    }
+	private void NavProgression()
+	{
+		// update navMultiplier
+		_navMultiplier = _timerProgress * (_navEndMultiplier - _navStartMultiplier) + _navStartMultiplier;
+		// Debug.Log(_navMultiplier);
+	}
 
-    public void FixedEngine()
-    {
-        _engineTimer = Random.Range(_engineLowRange, _engineHighRange);
-        _isEngineFixed = true;
-    }
+	private void EngineProgression()
+	{
+		// update engineRanges
+		_engineLowRange = _timerProgress * (_engineEndLowRange - _engineStartLowRange) + _engineStartLowRange;
+		_engineHighRange = _timerProgress * (_engineEndHighRange - _engineStartHighRange) + _engineStartHighRange;
+		// Debug.Log(_engineLowRange);
+		// Debug.Log(_engineHighRange);
 
-    public void ModuleEjected()
-    {
-        StartEjectionTimer();
-    }
+	}
 
-    private void StartLateGame()
-    {
-        _isLateGame = true;
-        StartEjectionTimer();
-    }
+	private void HullBreachProgression()
+	{
+		// update breachMaxTime
+		_breachMaxTime = _timerProgress * (_breachEndMaxTime - _breachStartMaxTime) + _breachStartMaxTime;
+		// Debug.Log(_breachMaxTime);
+	}
 
-    private void StartEndGame()
-    {
-        // future note: change to create gameObject prefab
-        EndGame _endGameScript = _owner.AddComponent<EndGame>();
-        _endGameScript._owner = _owner;
-        Destroy(this);
-    }
+	public void FixedEngine()
+	{
+		_engineTimer = Random.Range(_engineLowRange, _engineHighRange);
+		_isEngineFixed = true;
+	}
 
-    private void StartNewBreachTimer()
-    {
-        // get random percentage
-        float _breachTimerPercentage = Random.Range(0f, 1f);
+	private void StartEndGame()
+	{
+		// future note: change to create gameObject prefab
+		EndGame _endGameScript = _owner.AddComponent<EndGame>();
+		_endGameScript._owner = _owner;
+		Destroy(this);
+	}
 
-        // create additional variables
-        float _breachTimerPercentageOfAverageTimer = 0f;
-        float _breachTimerPercentageToAdd = 0f;
-        float _breachNewTimerPercentage = 0f;
 
-        // adjust breachTimerPercentage based on breachTimerAveragePercentage
-        if (_breachTimerPercentage < _breachTimerAveragePercentage)
-        {
-            _breachTimerPercentageOfAverageTimer = _breachTimerPercentage / _breachTimerAveragePercentage;
-            _breachTimerPercentageToAdd = _breachTimerPercentageOfAverageTimer * (_breachTimerAveragePercentage - _breachTimerPercentage);
-            _breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
-        }
-        else if (_breachTimerPercentage > _breachTimerAveragePercentage)
-        {
-            _breachTimerPercentageOfAverageTimer = Mathf.Abs((_breachTimerPercentage - _breachTimerAveragePercentage) / (1 - _breachTimerAveragePercentage) - 1);
-            _breachTimerPercentageToAdd = -(_breachTimerPercentageOfAverageTimer * (_breachTimerPercentage - _breachTimerAveragePercentage));
-            _breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
-        }
-        else
-        {
-            _breachNewTimerPercentage = _breachTimerPercentage;
-        }
+	//When Engine is broken time to reach the moon should remain constant
+	private void BreakEngine()
+	{
+		_isEngineFixed = false;
 
-        // set breachTimer with breachNewTimerPercentage
-        _breachTimer = _breachNewTimerPercentage * (_breachMaxTime - _breachMinTime) + _breachMinTime;
 
-        // adjust breachTimerAveragePercentage to new average
-        _breachTimerAveragePercentage = Mathf.Abs(_breachTimerPercentage-1);
+	}
+	//When nav is broken time to reach the moon should increase
+	private void BreakNav()
+	{
+		// future note: add nav mechanic script to access
+		// _scriptMechanic._isNavFixed = false;
+	}
 
-        // Debug.Log(_breachTimer);
-        // Debug.Log(_breachNewTimerPercentage);
-        // Debug.Log(_breachTimerPercentage);
-        // Debug.Log(_breachTimerAveragePercentage);
-    }
+	//When eletrical is broken the display should be dimmer
+	private void BreakElectrical()
+	{
+		// future note: add electrical mechanic script to access
+		// _scriptMechanic._isElectricalFixed = false;
 
-    private void StartEjectionTimer()
-    {
-        _isEjectionTimerRunning = true;
-        _ejectionTimer = Random.Range(_minTimeBetweenEjections, _maxTimeBetweenEjections);
-    }
+	}
 
-    public void BreakEngine()
-    {
-        // break engine code here
-    }
+	private void StartNewBreachTimer()
+	{
+		// get random percentage
+		float _breachTimerPercentage = Random.Range(0f, 1f);
 
-    public void CreateHullBreach()
-    {
-        // create hull breach code here
-    }
+		// create additional variables
+		float _breachTimerPercentageOfAverageTimer = 0f;
+		float _breachTimerPercentageToAdd = 0f;
+		float _breachNewTimerPercentage = 0f;
 
-    public void StartEjectionProblem()
-    {
-        // start ejection problem code here
-    }
+		// adjust breachTimerPercentage based on breachTimerAveragePercentage
+		if (_breachTimerPercentage < _breachTimerAveragePercentage)
+		{
+			_breachTimerPercentageOfAverageTimer = _breachTimerPercentage / _breachTimerAveragePercentage;
+			_breachTimerPercentageToAdd = _breachTimerPercentageOfAverageTimer * (_breachTimerAveragePercentage - _breachTimerPercentage);
+			_breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
+		}
+		else if (_breachTimerPercentage > _breachTimerAveragePercentage)
+		{
+			_breachTimerPercentageOfAverageTimer = Mathf.Abs((_breachTimerPercentage - _breachTimerAveragePercentage) / (1 - _breachTimerAveragePercentage) - 1);
+			_breachTimerPercentageToAdd = -(_breachTimerPercentageOfAverageTimer * (_breachTimerPercentage - _breachTimerAveragePercentage));
+			_breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
+		}
+		else
+		{
+			_breachNewTimerPercentage = _breachTimerPercentage;
+		}
+
+		// set breachTimer with breachNewTimerPercentage
+		_breachTimer = _breachNewTimerPercentage * (_breachMaxTime - _breachMinTime) + _breachMinTime;
+
+		// adjust breachTimerAveragePercentage to new average
+		_breachTimerAveragePercentage = Mathf.Abs(_breachTimerPercentage - 1);
+
+		// Debug.Log(_breachTimer);
+		// Debug.Log(_breachNewTimerPercentage);
+		// Debug.Log(_breachTimerPercentage);
+		// Debug.Log(_breachTimerAveragePercentage);
+	}
 }
