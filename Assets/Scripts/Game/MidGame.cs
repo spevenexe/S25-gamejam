@@ -6,6 +6,7 @@ public class MidGame : MonoBehaviour
 
     /*
     FixedEngine() will be called by the engine room when engine is fixed.
+    ModuleEjected() will be called when a module gets ejected.
     */
 
     // mechanic scripts to access
@@ -41,8 +42,14 @@ public class MidGame : MonoBehaviour
 
     // game state variables (not used yet)
     private bool _isEarlyGame;
-    private bool _isLateGame;
-    
+    private bool _isLateGame = false;
+
+    // late game variables
+    [SerializeField] private float _maxTimeBetweenEjections;
+    [SerializeField] private float _minTimeBetweenEjections;
+    private float _ejectionTimer;
+    private bool _isEjectionTimerRunning = false;
+
     // other variables
     public GameObject _owner;
 
@@ -62,11 +69,15 @@ public class MidGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // increase timer by deltaTime
-        _timer += Time.deltaTime;
+        // don't update if isLateGame
+        if (!_isLateGame)
+        {
+            // increase timer by deltaTime
+            _timer += Time.deltaTime;
 
-        // update timerProgress
-        _timerProgress = _timer / _totalMidGameTime;
+            // update timerProgress
+            _timerProgress = _timer / _totalMidGameTime;
+        }
 
         // decrease engineTimer by deltaTime
         if (_isEngineFixed)
@@ -78,7 +89,7 @@ public class MidGame : MonoBehaviour
             {
                 _isEngineFixed = false;
                 // Debug.Log("Engine Failure.");
-                // break engine code here
+                BreakEngine();
             }
         }
 
@@ -87,19 +98,35 @@ public class MidGame : MonoBehaviour
         // if _breachTimer is below 0, create breach and start new timer
         if (_breachTimer <= 0)
         {
-            // code to create hull breach
+            CreateHullBreach();
             StartNewBreachTimer();
         }
 
-        // run mechanic progressions
-        NavProgression();
-        EngineProgression();
-        HullBreachProgression();
-
-        // start EndGame
-        if (_timer >= _totalMidGameTime)
+        // decrease ejectionTimer by deltaTime
+        if (_isEjectionTimerRunning)
         {
-            StartEndGame();
+            _ejectionTimer -= Time.deltaTime;
+            // if _ejectionTime is below 0, stop timer and start ejection problem
+            if (_ejectionTimer <= 0)
+            {
+                _isEjectionTimerRunning = false;
+                StartEjectionProblem();
+            }
+        }
+
+        // don't update if isLateGame
+        if (!_isLateGame)
+        {
+            // run mechanic progressions
+            NavProgression();
+            EngineProgression();
+            HullBreachProgression();
+        }
+
+        // start LateGame
+        if (_timer >= _totalMidGameTime && !_isLateGame)
+        {
+            StartLateGame();
         }
         
     }
@@ -132,6 +159,17 @@ public class MidGame : MonoBehaviour
     {
         _engineTimer = Random.Range(_engineLowRange, _engineHighRange);
         _isEngineFixed = true;
+    }
+
+    public void ModuleEjected()
+    {
+        StartEjectionTimer();
+    }
+
+    private void StartLateGame()
+    {
+        _isLateGame = true;
+        StartEjectionTimer();
     }
 
     private void StartEndGame()
@@ -180,5 +218,26 @@ public class MidGame : MonoBehaviour
         // Debug.Log(_breachNewTimerPercentage);
         // Debug.Log(_breachTimerPercentage);
         // Debug.Log(_breachTimerAveragePercentage);
+    }
+
+    private void StartEjectionTimer()
+    {
+        _isEjectionTimerRunning = true;
+        _ejectionTimer = Random.Range(_minTimeBetweenEjections, _maxTimeBetweenEjections);
+    }
+
+    public void BreakEngine()
+    {
+        // break engine code here
+    }
+
+    public void CreateHullBreach()
+    {
+        // create hull breach code here
+    }
+
+    public void StartEjectionProblem()
+    {
+        // start ejection problem code here
     }
 }
