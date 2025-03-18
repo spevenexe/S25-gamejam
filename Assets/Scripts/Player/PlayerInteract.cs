@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerInteract : MonoBehaviour
 {
+    [SerializeField] private Color _highlightOutline = Color.yellow;
+    [SerializeField] private Color _defaultOutline = Color.black;
+
     [SerializeField] private float _lerpStrength=0.01f;
     [SerializeField] private float _maxFollowDistance = 5f;
     [SerializeField] private float _playerRadius = 5f;
@@ -24,6 +27,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
+        Target?.highlight(_defaultOutline);
         // if we aren't carrying anything heavy, look for something to interact with
         if(HauledItem == null){
             Transform cameraTransform = _pCam.transform;
@@ -44,7 +48,14 @@ public class PlayerInteract : MonoBehaviour
                 }
                 Target = minHit.transform.GetComponent<Interactable>();
             }
-            EquipSlot.showToolTip(Target);
+            // if we have an equipped item, don't show the prompt for another equippable item
+            if (Target != null && Target.GetType() == typeof(EquippableItem) && EquippedItem != null)
+                EquipSlot.ClearToolTip();
+            else
+            {
+                EquipSlot.showToolTip(Target);
+                Target?.highlight(_highlightOutline);
+            }
         }
         // we are carrying something heavy, interacting will drop it
         else
@@ -66,7 +77,7 @@ public class PlayerInteract : MonoBehaviour
             // end-=pivot;
             // Vector3 newPos = Vector3.Slerp(start,end,_lerpStrength) + pivot;
             HauledItem.transform.position = newPos;
-            EquipSlot.showToolTip(null);
+            EquipSlot.ClearToolTip();
         }
     }
 
@@ -93,24 +104,26 @@ public class PlayerInteract : MonoBehaviour
         HauledItem = null;
         rb.useGravity = true;
         rb.excludeLayers = LayerMask.GetMask("Nothing"); 
+        rb.linearVelocity = Vector3.zero;
     }
 
     internal void Equip(EquippableItem item)
     {
         Rigidbody rb = item.rb;
         rb.useGravity = false;
-        rb.excludeLayers = LayerMask.GetMask("Player"); 
+        rb.excludeLayers = LayerMask.NameToLayer("Everything"); 
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.rotation = Quaternion.identity;
         rb.freezeRotation = true;
-        item.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);
+        // item.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);
+        // item.transform.rotation = Quaternion.identity;
         item.gameObject.layer = LayerMask.NameToLayer("UI");
 
         EquippedItem = item;
-        EquippedItem.transform.SetParent(EquipSlot.transform,false);
-        EquippedItem.transform.SetParent(null);
-        StartCoroutine(EquipSlot.LerpItem(EquippedItem));
+        // EquippedItem.transform.SetParent(EquipSlot.transform,true);
+        // StartCoroutine(EquipSlot.LerpItem(EquippedItem));
+        StartCoroutine(EquipSlot.LerpItemToPocket(EquippedItem));
         EquipSlot.BottomRightText.text = EquippedItem.DropTooltip();
     }
 
@@ -119,14 +132,8 @@ public class PlayerInteract : MonoBehaviour
         Rigidbody rb = EquippedItem.rb;
 
         EquippedItem.gameObject.layer = LayerMask.NameToLayer("Interactable");
-        EquippedItem.transform.SetParent(_hauledItemSlotTransform,false);
-        EquippedItem.transform.SetPositionAndRotation(_hauledItemSlotTransform.position,Quaternion.identity);
-        EquippedItem.transform.localScale = Vector3.one;
-        EquippedItem.transform.SetParent(null);
-
-        rb.excludeLayers = LayerMask.GetMask("Nothing"); 
-        rb.useGravity = true;
-        rb.freezeRotation = false;
+        StartCoroutine(EquipSlot.LerpItemToFloor(EquippedItem,_hauledItemSlotTransform));
+        
         EquippedItem = null;
         EquipSlot.BottomRightText.text = "";
     }

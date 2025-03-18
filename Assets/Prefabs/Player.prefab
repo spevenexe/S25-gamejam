@@ -325,10 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCamera: {fileID: 0}
-  _movementInput: {fileID: 218568760929916930, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
-  _lookInput: {fileID: -8683902540707900372, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
-  _interactInput: {fileID: 5865256312620877185, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
-  _dropInput: {fileID: 1944949733542216515, guid: 591405d1de3438b4a93e635ac1c44433, type: 3}
 --- !u!114 &3995587675138283517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,9 +351,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb04e16515d92184f8f4c78cb76fa4d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _highlightOutline: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _defaultOutline: {r: 0, g: 0, b: 0, a: 1}
   _lerpStrength: 0.01
   _maxFollowDistance: 5
   _playerRadius: 1.5
-  _interactDistance: 5
+  _interactDistance: 3
   EquipSlot: {fileID: 0}
   _hauledItemSlotTransform: {fileID: 0}

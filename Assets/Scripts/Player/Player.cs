@@ -23,12 +23,7 @@ public class Player : MonoBehaviour
 
     private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop();
 
-    // private void Use(InputAction.CallbackContext context) => PlayerInteract.Target?.Interact(this);
-    private void Use(InputAction.CallbackContext context) 
-    {
-        Debug.Log(PlayerInteract.Target);
-        PlayerInteract.Target?.Interact(this);
-    }
+    private void Use(InputAction.CallbackContext context) => PlayerInteract.Target?.Interact(this);
 
     void OnDisable()
     {
