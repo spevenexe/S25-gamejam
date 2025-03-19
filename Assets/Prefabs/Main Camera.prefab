@@ -305,7 +305,7 @@ MonoBehaviour:
   PlayerOrientation: {fileID: 0}
   _playerRB: {fileID: 0}
   _bobMovementThreshold: 0.1
-  _bobTopDistance: 0.2
+  _bobTopDistance: 0.1
   _bobBottomDistance: 0.2
   _upBobStrength: 0.005
   _downBobStrength: 0.01

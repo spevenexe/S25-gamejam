@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
     public PlayerInteract PlayerInteract {get; private set;}
     public PlayerCamera _playerCamera;
     private PlayerInput _playerInput;
-    // [SerializeField] private InputActionReference _movementInput,_lookInput,_interactInput,_dropInput;
     private InputAction _movementInput,_lookInput,_interactInput,_dropInput;
     void OnEnable()
     {
