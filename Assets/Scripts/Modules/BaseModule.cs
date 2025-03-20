@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseModule : MonoBehaviour
@@ -8,6 +9,12 @@ public abstract class BaseModule : MonoBehaviour
     protected float _timerLowRange,_timerHighRange;
     protected float _timer;
     public bool IsBroken = false;
+
+    void Start(){
+        _timer = Random.Range(_timerLowRange, _timerHighRange);
+        IsBroken = false;
+
+    }
 
     protected abstract void BreakModule();
     protected virtual void FixModule()
