@@ -1,7 +1,11 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ViewBobbing : MonoBehaviour
 {
+    [SerializeField] private Action stepped;
+
     public Transform PlayerOrientation;
     [SerializeField] private Rigidbody _playerRB;
     [SerializeField] private float _bobMovementThreshold = 0.1f;
@@ -20,6 +24,7 @@ public class ViewBobbing : MonoBehaviour
     {
         _bobTarget_Y=PlayerOrientation.position.y+_bobTopDistance;
         _bobStrength = _upBobStrength;
+        if (stepped == null) stepped = GameObject.FindGameObjectWithTag("Player").GetOrAddComponent<PlayerSounds>().FootstepEvent;
     }
 
     public void Bob()
@@ -30,6 +35,7 @@ public class ViewBobbing : MonoBehaviour
         {
             if(Mathf.Abs(transform.position.y - _bobTarget_Y) < 0.1f)
             {
+                if(_lerpDirection == lerpDir.down) stepped.Invoke();
                 _lerpDirection = (lerpDir)((int)(_lerpDirection+1)%2);
                 _bobTarget_Y=PlayerOrientation.position.y + ((_lerpDirection == lerpDir.up) ? _bobTopDistance : -_bobBottomDistance); 
                 _bobStrength = (_lerpDirection == lerpDir.up) ? _upBobStrength : _downBobStrength;
