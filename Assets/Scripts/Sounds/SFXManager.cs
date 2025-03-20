@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource)),ExecuteInEditMode]
@@ -71,19 +72,20 @@ public class SFXManager : MonoBehaviour
         return clips[UnityEngine.Random.Range(0,clips.Length)];
     }
 
-    public static void LoopClip(AudioSource audioSource)
+    public static AudioClip GetAudioClipAt(SoundType sound,int index)
+    {
+        AudioClip [] clips = Instance._soundList[(int) sound].Sounds;
+        return clips[index];
+    }
+
+    public static void LoopClip(AudioSource audioSource,float volume=1f)
     {
         if (!audioSource.loop)Debug.LogWarning($"{audioSource} is not a looping audio. Setting to active loop...");
         audioSource.loop = true;
+        audioSource.volume = volume;
         if (!audioSource.isPlaying) audioSource.Play();
     }
-
-    public static void LoopClip(AudioSource audioSource,float volume)
-    {
-        audioSource.volume = volume;
-        LoopClip(audioSource);
-    }
-
+    
     public enum SoundType
     {
         FOOTSTEPS,
@@ -91,7 +93,14 @@ public class SFXManager : MonoBehaviour
         BUTTON,
         CRASH,
         ENGINE_BREAK,
-        LEVER
+        LEVER,
+        ALARM
+    }
+    public enum ALARM_INTENSITY
+    {
+        LOW,
+        MID,
+        HIGH
     }
 
     [System.Serializable]

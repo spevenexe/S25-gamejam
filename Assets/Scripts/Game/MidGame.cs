@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class MidGame : MonoBehaviour
@@ -29,10 +28,14 @@ public class MidGame : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (navigationModule == null) navigationModule = FindAnyObjectByType<Navigation>();
+        if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreach>();
+        if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
+
         // create values for progression variables
-        navigationModule.SetNavMultipler(_timerProgress);
-        hullBreachModule.SetTimerRanges(_timerProgress);
-        engineModule.SetTimerRanges(_timerProgress);
+        navigationModule?.SetNavMultipler(_timerProgress);
+        hullBreachModule?.SetTimerRanges(_timerProgress);
+        engineModule?.SetTimerRanges(_timerProgress);
 
         // need to make sure engine timer is set
 
@@ -48,20 +51,21 @@ public class MidGame : MonoBehaviour
         _timerProgress = _timer / _totalMidGameTime;
 
         // decrement timer for engineModule
-        engineModule.DecrementTimer(Time.deltaTime);
+        engineModule?.DecrementTimer(Time.deltaTime);
 
         // decrement timer for hullBreachModule
-        hullBreachModule.adjustBreachTimer(Time.deltaTime);
+        hullBreachModule?.adjustBreachTimer(Time.deltaTime);
 
         // give timerProgress to each of the modules
-        navigationModule.SetNavMultipler(_timerProgress);
-        hullBreachModule.SetTimerRanges(_timerProgress);
-        engineModule.SetTimerRanges(_timerProgress);
+        navigationModule?.SetNavMultipler(_timerProgress);
+        hullBreachModule?.SetTimerRanges(_timerProgress);
+        engineModule?.SetTimerRanges(_timerProgress);
 
         // end the game when timer up
         if (_timer >= _totalMidGameTime)
         {
             StartEndGame();
+            return;
         }
 
         /*

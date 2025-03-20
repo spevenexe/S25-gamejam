@@ -119,6 +119,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &89797069
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3151791134702464869, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_Name
+      value: GameController
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4037903314215071512, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7610613544657248163, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
+      propertyPath: engineModule
+      value: 
+      objectReference: {fileID: 105564692}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf6ecb933d57fe7449992f9a745fd556, type: 3}
 --- !u!1 &94669904 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5733818620741264064, guid: 83052b397146d904fbf7de568e0297a4, type: 3}
@@ -204,10 +265,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e83c6368fb5e2428f6f7d8be158ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timerStartLowRange: 0
-  _timerStartHighRange: 0
-  _timerEndLowRange: 0
-  _timerEndHighRange: 0
+  _timerStartLowRange: 5
+  _timerStartHighRange: 10
+  _timerEndLowRange: 15
+  _timerEndHighRange: 20
+  _volume: 0.5
+  _alarmInterval: 1.5
+  _alarmIntensity: 2
   leverGroup: {fileID: 1651462686}
 --- !u!4 &105564696 stripped
 Transform:
@@ -655,6 +719,14 @@ MonoBehaviour:
   - name: ENGINE_BREAK
     sounds:
     - {fileID: 8300000, guid: ebc7512e37e3ee1498b23307a3807cde, type: 3}
+  - name: LEVER
+    sounds:
+    - {fileID: 8300000, guid: 476cd93936f69424193957de71696b48, type: 3}
+  - name: ALARM
+    sounds:
+    - {fileID: 8300000, guid: 1c8a62f41486d3949ac614e80d6b0afa, type: 3}
+    - {fileID: 8300000, guid: ddf819d48caf63146968c36f107d3540, type: 3}
+    - {fileID: 8300000, guid: 69d2d5d8de418d74bb52d7d80ddeb09d, type: 3}
 --- !u!82 &515668435
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3087,6 +3159,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 89797069}
   - {fileID: 338154626}
   - {fileID: 832575519}
   - {fileID: 573030202}
