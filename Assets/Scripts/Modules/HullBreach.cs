@@ -60,8 +60,13 @@ public class HullBreach : MonoBehaviour
     // Keianna TODO
     private void CreateHullBreach()
     {
+        //Spawn interactable object, fire, for hull breach
+        Instantiate(Resources.Load("Prefabs/Interactables/Fire"), transform.position, Quaternion.identity);
+
+
         throw new NotImplementedException();
     }
+    
 
     // you should call this in Update()
     public void adjustBreachTimer(float deltaTime)
