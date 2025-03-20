@@ -5,6 +5,7 @@ public class PlayerSounds : MonoBehaviour
 {
     public Action FootstepEvent;
     private PlayerMovement _playerMovement;
+    private int _currentFoot = 0;
 
     [SerializeField] float _footstep_frequency = 2;
     private float _timeToNextFootstep;
@@ -25,7 +26,7 @@ public class PlayerSounds : MonoBehaviour
         _timeToNextFootstep = 0;
     }
 
-    void playFootsep() => SFXManager.PlaySound(SFXManager.SoundType.FOOTSTEPS);
+    void playFootsep() => SFXManager.PlaySoundAt(SFXManager.SoundType.FOOTSTEPS,_currentFoot++%2);
 
     void Update()
     {
