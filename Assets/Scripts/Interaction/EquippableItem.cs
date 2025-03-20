@@ -1,8 +1,9 @@
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
+using UnityEngine;
 
 public class EquippableItem : Item
 {
+    [SerializeField] public Vector3 targetRotation;
+
     public override void Interact(Player player)
     {
         // use the item
@@ -17,11 +18,9 @@ public class EquippableItem : Item
         }
     }
 
-    public override string MessageTooltip()
+    protected override string UniqueToolTip()
     {
-        string message = base.MessageTooltip();
-        message+=" Equip "+name;
-        return message;
+        return $"Equip {_itemName}";
     }
 
     // return true if there is a succesful use case

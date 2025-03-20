@@ -23,11 +23,8 @@ public class HeavyItem : Item
         }
     }
 
-    public override string MessageTooltip()
+    protected override string UniqueToolTip()
     {
-        string message = base.MessageTooltip();
-
-        message+=" Pick Up "+name;
-        return message;
+        return $"Pick Up {_itemName}";
     }
 }

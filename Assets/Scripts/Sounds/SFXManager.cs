@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public class SFXManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();  
     }
     // you probably don't need this, but this adds greater flexibility
-    public static void PlaySoundAt(SoundType sound,int index=0, float volume=1f)
+    public static void PlaySoundAtIndex(SoundType sound,int index=0, float volume=1f)
     {
         AudioClip [] clips = Instance._soundList[(int) sound].Sounds;
         Instance._audioSource.PlayOneShot(clips[index],volume);
@@ -57,20 +58,40 @@ public class SFXManager : MonoBehaviour
         Instance._audioSource.PlayOneShot(audioClip,volume);
     }
 
+    // for playing generic sounds that have multiple variants (e.g. footsteps)
+    public static void PlaySoundAtPosition(SoundType sound,Vector3 position,float volume=1f)
+    {
+        AudioClip [] clips = Instance._soundList[(int) sound].Sounds;
+        AudioSource.PlayClipAtPoint(clips[UnityEngine.Random.Range(0,clips.Length)],position,volume);
+    }
+
+    public static AudioClip GetAudioClip(SoundType sound)
+    {
+        AudioClip [] clips = Instance._soundList[(int) sound].Sounds;
+        return clips[UnityEngine.Random.Range(0,clips.Length)];
+    }
+
     public static void LoopClip(AudioSource audioSource)
     {
         if (!audioSource.loop)Debug.LogWarning($"{audioSource} is not a looping audio. Setting to active loop...");
         audioSource.loop = true;
-        audioSource.Play();
+        if (!audioSource.isPlaying) audioSource.Play();
+    }
 
+    public static void LoopClip(AudioSource audioSource,float volume)
+    {
+        audioSource.volume = volume;
+        LoopClip(audioSource);
     }
 
     public enum SoundType
     {
         FOOTSTEPS,
-        PICKUP
+        PICKUP,
+        BUTTON,
+        CRASH,
+        ENGINE_BREAK
     }
-
 
     [System.Serializable]
     private struct SoundList
