@@ -90,7 +90,8 @@ public class SFXManager : MonoBehaviour
         PICKUP,
         BUTTON,
         CRASH,
-        ENGINE_BREAK
+        ENGINE_BREAK,
+        LEVER
     }
 
     [System.Serializable]

@@ -3,13 +3,9 @@ using UnityEngine;
 
 public abstract class EventInteractable : Interactable
 {
-    protected event Action action;
+    public event Action InteractionTriggers;
     public override void Interact(Player player)
     {
-        if (_canInteract) action.Invoke();
+        if (_canInteract) InteractionTriggers.Invoke();
     }
-
-    public virtual void AddEvent(Action a) => action+=a;
-
-    public virtual void RemoveEvent(Action a) => action-=a;
 }

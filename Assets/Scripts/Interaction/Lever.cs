@@ -23,12 +23,14 @@ public class Lever : EventInteractable{
     protected override void OnEnable()
     {
         base.OnEnable();
-        action+=Switch;
+        InteractionTriggers+=Switch;
+        InteractionTriggers+= () => SFXManager.PlaySound(SFXManager.SoundType.LEVER);
     }
     protected override void OnDisable()
     {
         base.OnDisable();
-        action-=Switch;
+        InteractionTriggers-=Switch;
+        InteractionTriggers-= () => SFXManager.PlaySound(SFXManager.SoundType.LEVER);
     }
 
     protected override void Awake()

@@ -19,10 +19,6 @@ public class EngineModule : BaseModule
     protected override void BreakModule()
     {
         engine.Break();
-        foreach(Lever l in levers)
-        {
-            l.Activate();
-        }
         base.BreakModule();
     }
 
@@ -39,30 +35,32 @@ public class EngineModule : BaseModule
 
     protected override IEnumerator PlayFixingMinigame()
     {
-        Action [] adjustCorrectScore = new Action[levers.Length];
-        int score = 0;
-        for(int i = 0; i < levers.Length; i++)
+        // make sure at least one lever is in the wrong state
+        if (levers.Length > 0)
+            levers[0].CorrectState =(Lever.LeverState) (((int)levers[0].CorrectState + 1) % 2);
+
+        // generate a solution
+        for(int i = 1; i < levers.Length; i++)
         {
-            Lever.LeverState correctValue = (Lever.LeverState) UnityEngine.Random.Range(0,2);
-            if (levers[i].ActiveState == correctValue) score++;
-            adjustCorrectScore[i] = () =>
-            {
-                score+=(levers[i].ActiveState == correctValue) ? 1 : -1;
-            };
-            levers[i].AddEvent(adjustCorrectScore[i]);
+            levers[i].CorrectState = (Lever.LeverState) UnityEngine.Random.Range(0,2);
+        }
+
+        foreach(Lever l in levers)
+        {
+            l.Activate();
         }
 
         while(IsBroken)
         {
             // set a public variable flag, which MidGame.cs can read to indicate its done
             // FixModule() sets IsBroken to false;
-            if(score >= levers.Length) FixModule();;
-            yield return null;
-        }
-
-        for(int i = 0; i < levers.Length; i++)
-        {
-            levers[i].RemoveEvent(adjustCorrectScore[i]);
+            bool correct = true;
+            for(int i = 0; i < levers.Length; i++)
+            {
+                if (levers[i].ActiveState != levers[i].CorrectState) correct = false;
+            }
+            if (correct) FixModule();
+            yield return null; // may want to wait for longer if this causes lag
         }
 
     }
