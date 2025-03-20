@@ -75,6 +75,7 @@ public class SFXManager : MonoBehaviour
         FOOTSTEPS,
         PICKUP,
         BUTTON,
+        CRASH,
         ENGINE_BREAK
     }
 
