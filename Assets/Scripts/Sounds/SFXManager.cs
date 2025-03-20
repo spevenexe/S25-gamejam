@@ -61,16 +61,22 @@ public class SFXManager : MonoBehaviour
     {
         if (!audioSource.loop)Debug.LogWarning($"{audioSource} is not a looping audio. Setting to active loop...");
         audioSource.loop = true;
-        audioSource.Play();
+        if (!audioSource.isPlaying) audioSource.Play();
+    }
 
+    public static void LoopClip(AudioSource audioSource,float volume)
+    {
+        audioSource.volume = volume;
+        LoopClip(audioSource);
     }
 
     public enum SoundType
     {
         FOOTSTEPS,
-        PICKUP
+        PICKUP,
+        BUTTON,
+        ENGINE_BREAK
     }
-
 
     [System.Serializable]
     private struct SoundList

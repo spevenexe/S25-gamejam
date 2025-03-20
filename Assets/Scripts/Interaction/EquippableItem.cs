@@ -1,8 +1,9 @@
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
+using UnityEngine;
 
 public class EquippableItem : Item
 {
+    [SerializeField] public Vector3 targetRotation;
+
     public override void Interact(Player player)
     {
         // use the item

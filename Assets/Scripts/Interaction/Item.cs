@@ -1,9 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public abstract class Item : Interactable
 {
     public Rigidbody rb {get; private set;}
-    private void Start()
+    protected override void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
