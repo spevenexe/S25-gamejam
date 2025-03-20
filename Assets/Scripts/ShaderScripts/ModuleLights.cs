@@ -1,10 +1,11 @@
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
 public class ModuleLights : MonoBehaviour
 {
-    private Light[] lights;
-    private Material material;
+    protected Light[] lights;
+    protected Material material;
 
     // Emission applied to the actual material
     // Light applied to the light components
@@ -14,7 +15,7 @@ public class ModuleLights : MonoBehaviour
     [SerializeField] private Color _alarmEmissionColor = Color.red;
     [SerializeField] private Color _alarmLightColor = Color.red;
 
-    void Start()
+    protected virtual void Start()
     {
         lights = GetComponentsInChildren<Light>();
         material = GetComponent<MeshRenderer>().material;
@@ -23,14 +24,14 @@ public class ModuleLights : MonoBehaviour
         ResetColor();
     }
 
-    public void SetLightColor(Color emissionColor, Color lightColor)
+    public virtual void SetLightColor(Color emissionColor, Color lightColor)
     {
         foreach(Light l in lights)
             l.color = lightColor;
         material.SetColor("_EmissionColor",emissionColor);
     }
 
-    public void SetLightColor(Color color)
+    public virtual void SetLightColor(Color color)
     {
         foreach(Light l in lights)
             l.color = color;
@@ -40,3 +41,25 @@ public class ModuleLights : MonoBehaviour
     public void ResetColor() => SetLightColor(_defaultEmissionColor,_defaultLightColor);
     public void SetAlarmColor() => SetLightColor(_alarmEmissionColor,_alarmLightColor);
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(ModuleLights))]
+public class ModuleLightsEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        ModuleLights ml = (ModuleLights) target;
+        if(GUILayout.Button("SetAlarm",GUILayout.Width(90f)))
+        {
+            ml.SetAlarmColor();
+        }
+
+        if(GUILayout.Button("Reset",GUILayout.Width(90f)))
+        {
+            ml.ResetColor();
+        }
+    }
+}
+#endif

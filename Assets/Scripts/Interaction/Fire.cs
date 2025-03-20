@@ -18,6 +18,9 @@ public class Fire : Interactable
         }
     }
 
-
+    protected override string UniqueToolTip()
+    {
+        throw new System.NotImplementedException();
+    }
 
 }

@@ -26,15 +26,13 @@ public class Monitor : EventInteractable
 
     private IEnumerator ButtonCooldown()
     {
-        canInteract = false;
+        _canInteract = false;
         yield return new WaitForSeconds(_buttonCooldown);
-        canInteract = true;
+        _canInteract = true;
     }
 
-    public override string MessageTooltip()
+    protected override string UniqueToolTip()
     {
-        string message = base.MessageTooltip();
-        message+=" Navigate";
-        return message;
+        return "Navigate";
     } 
 }

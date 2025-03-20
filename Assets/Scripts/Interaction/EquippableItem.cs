@@ -18,11 +18,9 @@ public class EquippableItem : Item
         }
     }
 
-    public override string MessageTooltip()
+    protected override string UniqueToolTip()
     {
-        string message = base.MessageTooltip();
-        message+=" Equip "+name;
-        return message;
+        return $"Equip {_itemName}";
     }
 
     // return true if there is a succesful use case

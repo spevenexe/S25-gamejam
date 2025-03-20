@@ -39,11 +39,9 @@ public class Suit : EventInteractable
         Destroy(gameObject);
     }
 
-    public override string MessageTooltip()
+    protected override string UniqueToolTip()
     {
-        string message = base.MessageTooltip();
-        message+=" Put on Suit";
-        return message;
+        return $"Put on Suit";
     }
 
     public override void highlight(Color color)

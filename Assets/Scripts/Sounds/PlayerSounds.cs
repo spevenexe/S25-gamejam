@@ -26,7 +26,7 @@ public class PlayerSounds : MonoBehaviour
         _timeToNextFootstep = 0;
     }
 
-    void playFootsep() => SFXManager.PlaySoundAt(SFXManager.SoundType.FOOTSTEPS,_currentFoot++%2);
+    void playFootsep() => SFXManager.PlaySoundAtIndex(SFXManager.SoundType.FOOTSTEPS,_currentFoot++%2);
 
     void Update()
     {
