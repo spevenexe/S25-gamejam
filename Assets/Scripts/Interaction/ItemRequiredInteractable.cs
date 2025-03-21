@@ -10,7 +10,7 @@ public abstract class InteractbleWithItem : EventInteractable
 
     public override string MessageTooltip(EquippableItem equippedItem = null)
     {
-        if((equippedItem != null && _correctItem == equippedItem.ItemName) || _correctItem == InteractbleWithItem.ItemType.None)
+        if((equippedItem != null && _correctItem == equippedItem.ItemName) || _correctItem == ItemType.None)
         {
             _canInteract = true;
             return base.MessageTooltip(equippedItem);

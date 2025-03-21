@@ -68,7 +68,7 @@ public class MidGame : MonoBehaviour
         {
             StartEndGame();
             Debug.Log("Midgame complete");
-            return;
+            Destroy(this);
         }
 
         /*

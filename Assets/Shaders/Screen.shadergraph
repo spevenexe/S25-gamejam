@@ -152,6 +152,9 @@
         },
         {
             "m_Id": "90ae9baeb05b4a1aab1a5e6edd532131"
+        },
+        {
+            "m_Id": "78afb92f8af640a882cedf892d7d44df"
         }
     ],
     "m_GroupDatas": [],
@@ -351,6 +354,20 @@
                     "m_Id": "32b63a81f9bf4c278576bc745a747581"
                 },
                 "m_SlotId": 2
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "78afb92f8af640a882cedf892d7d44df"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "07d131b0541b4389a6317ebcb4ee114d"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -3050,6 +3067,42 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "78afb92f8af640a882cedf892d7d44df",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -179.99998474121095,
+            "y": 2028.6666259765625,
+            "width": 155.99998474121095,
+            "height": 35.9998779296875
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "e01aba42eb2e46878cb385c256d95c20"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "69a59986dfb64f73a72e2206e184b184"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicValueMaterialSlot",
     "m_ObjectId": "7a1c1cb6a647471ab6484e561817da7d",
     "m_Id": 1,
@@ -4662,6 +4715,19 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
+    "m_ObjectId": "e01aba42eb2e46878cb385c256d95c20",
+    "m_Id": 0,
+    "m_DisplayName": "Screen Sprite",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_BareResource": false
 }
 
 {

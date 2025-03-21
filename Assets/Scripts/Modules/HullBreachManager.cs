@@ -13,18 +13,21 @@ public class HullBreachManager : MonoBehaviour
     private float _breachTimer;
     private float _breachTimerAveragePercentage = 0.5f;
 
-    [SerializeField] private Transform [] _breachSpots;
+    private Transform [] _breachSpots;
     private HullBreach [] _breaches;
-    private bool [] _destroyedSpots; // for handling ejection
     private HullBreach _breachPrefab;
 
     void Start()
     {
+        GameObject [] objs = GameObject.FindGameObjectsWithTag("Breach Spot");
+        if (_breachSpots==null)
+        {
+            _breachSpots = new Transform[objs.Length];
+            for(int i = 0; i < _breachSpots.Length;i++)
+                _breachSpots[i] = objs[i].transform;
+        }
         _breaches = new HullBreach[_breachSpots.Length];
         _breachPrefab = Resources.Load<HullBreach>("Interactables/Breach");
-        _destroyedSpots = new bool[_breachSpots.Length];
-        for(int i = 0; i < _destroyedSpots.Length; i++)
-            _destroyedSpots[i] = false;
     }
 
     // make sure to call this on start too, to initialize the values
@@ -80,7 +83,8 @@ public class HullBreachManager : MonoBehaviour
         // get open spots
         for(int i = 0; i < _breaches.Length; i++)
         {
-            if(_breaches[i] == null && !_destroyedSpots[i]) openSpots.Add(_breachSpots[i]);
+            // they can have breaches or be ejected
+            if(_breaches[i] == null && _breachSpots[i] != null) openSpots.Add(_breachSpots[i]);
         }
         if (openSpots.Count == 0)
         {

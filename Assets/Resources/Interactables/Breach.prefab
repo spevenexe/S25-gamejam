@@ -192,6 +192,7 @@ MonoBehaviour:
   - {fileID: 1108603316082051209}
   - {fileID: 9200842189244431969}
   _correctItem: 1
+  _crashVolume: 1
 --- !u!135 &2161079608432932943
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -205,7 +206,7 @@ SphereCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
