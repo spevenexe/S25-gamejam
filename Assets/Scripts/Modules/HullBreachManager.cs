@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class HullBreach : MonoBehaviour
+public class HullBreachManager : MonoBehaviour
 {
     [SerializeField] private float _breachStartMaxTime;
     [SerializeField] private float _breachEndMaxTime;
@@ -10,6 +12,20 @@ public class HullBreach : MonoBehaviour
     [SerializeField] private float _breachMinTime;
     private float _breachTimer;
     private float _breachTimerAveragePercentage = 0.5f;
+
+    [SerializeField] private Transform [] _breachSpots;
+    private HullBreach [] _breaches;
+    private bool [] _destroyedSpots; // for handling ejection
+    private HullBreach _breachPrefab;
+
+    void Start()
+    {
+        _breaches = new HullBreach[_breachSpots.Length];
+        _breachPrefab = Resources.Load<HullBreach>("Interactables/Breach");
+        _destroyedSpots = new bool[_breachSpots.Length];
+        for(int i = 0; i < _destroyedSpots.Length; i++)
+            _destroyedSpots[i] = false;
+    }
 
     // make sure to call this on start too, to initialize the values
     public void SetTimerRanges(float timerProgress)
@@ -60,11 +76,23 @@ public class HullBreach : MonoBehaviour
     // Keianna TODO
     private void CreateHullBreach()
     {
-        //Spawn interactable object, fire, for hull breach
-        Instantiate(Resources.Load("Prefabs/Interactables/Fire"), transform.position, Quaternion.identity);
+        List<Transform> openSpots = new List<Transform>();
+        // get open spots
+        for(int i = 0; i < _breaches.Length; i++)
+        {
+            if(_breaches[i] == null && !_destroyedSpots[i]) openSpots.Add(_breachSpots[i]);
+        }
+        if (openSpots.Count == 0)
+        {
+            Debug.LogWarning("No open spots");
+            return;
+        }
+        int index =  Random.Range(0,openSpots.Count);
+        Transform selectedSpot = openSpots[index];
 
-
-        throw new NotImplementedException();
+        //Create breach and add it to list
+        HullBreach breach = Instantiate(_breachPrefab, selectedSpot.position,selectedSpot.rotation);
+        _breaches[index] = breach;
     }
     
 
@@ -80,4 +108,35 @@ public class HullBreach : MonoBehaviour
             StartNewBreachTimer();
         }
     }
+
+    public int BreachCount()
+    {
+        int ret = 0;
+        foreach(HullBreach b in _breaches)
+            ret+= (b != null) ? 1 : 0;
+        return ret;
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(HullBreachManager))]
+public class HullBreachManagerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        GUILayout.BeginHorizontal();
+
+        EditorGUILayout.LabelField("Time", GUILayout.Width(45f));
+        float sec = EditorGUILayout.FloatField(0, GUILayout.Width(45f));
+
+        HullBreachManager hbm = (HullBreachManager) target;
+        if(GUILayout.Button("Decrement Timer",GUILayout.Width(120f)))
+            hbm.adjustBreachTimer(100);
+        
+        GUILayout.EndHorizontal();
+
+    }
+}
+#endif

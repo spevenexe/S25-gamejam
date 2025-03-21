@@ -6,17 +6,27 @@ using UnityEngine;
 public abstract class Item : Interactable
 {
     public Rigidbody rb {get; private set;}
-    [Serialize] protected String _itemName;
+    [SerializeField] private InteractbleWithItem.ItemType itemName = InteractbleWithItem.ItemType.None;
+    public InteractbleWithItem.ItemType ItemName {get {return itemName;}}
+
+    [SerializeField] private float _clangVolume=1f;
+    public float ClangVolume {get {return _clangVolume;}}
+    
     protected override void Start()
     {
-        if(_itemName == null ||_itemName.Length == 0) _itemName = name;
+        if(ItemName == InteractbleWithItem.ItemType.None) Debug.LogWarning($"Item {gameObject} has no name.");
         rb = GetComponent<Rigidbody>();
     }
 
     public string DropTooltip()
     {
-        return Utils.getKeys(PInput,"Drop") + " Drop " + _itemName;
+        return $"{Utils.getKeys(PInput,"Drop")} Drop {ItemName}";
     }
 
-    protected override String UniqueToolTip() => _itemName;
+    protected override String UniqueToolTip(EquippableItem equippedItem) => ItemName.ToString();
+
+    void OnCollisionEnter(Collision collision)
+    {
+        SFXManager.PlaySound(SFXManager.SoundType.ITEM_CLANG,_clangVolume);
+    }
 }

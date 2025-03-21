@@ -31,7 +31,7 @@ public class Monitor : EventInteractable
         _canInteract = true;
     }
 
-    protected override string UniqueToolTip()
+    protected override string UniqueToolTip(EquippableItem equippedItem)
     {
         return "Navigate";
     } 

@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public abstract class Interactable : MonoBehaviour
 {
     [SerializeField] protected bool _canInteract = true;
+    [SerializeField] protected GameObject [] _parts;
 
     protected Material _outline;
     protected static PlayerInput PInput; 
@@ -46,15 +47,15 @@ public abstract class Interactable : MonoBehaviour
     protected virtual void Start(){}
 
     // return just the keys
-    public String MessageTooltip()
+    public virtual String MessageTooltip(EquippableItem equippedItem=null)
     {
         if(!_canInteract)
             return "";
         else
-            return $"{Utils.getKeys(PInput,"Interact")} {UniqueToolTip()}";
+            return $"{Utils.getKeys(PInput,"Interact")} {UniqueToolTip(equippedItem)}";
     }
 
-    protected abstract String UniqueToolTip();
+    protected abstract String UniqueToolTip(EquippableItem equippedItem);
 
     public static void setPI(PlayerInput pi)
     {

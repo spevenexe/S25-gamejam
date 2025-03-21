@@ -23,8 +23,8 @@ public class HeavyItem : Item
         }
     }
 
-    protected override string UniqueToolTip()
+    protected override string UniqueToolTip(EquippableItem equippedItem)
     {
-        return $"Pick Up {_itemName}";
+        return $"Pick Up {ItemName}";
     }
 }

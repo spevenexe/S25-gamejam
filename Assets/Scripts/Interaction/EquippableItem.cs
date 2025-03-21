@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EquippableItem : Item
@@ -18,14 +19,20 @@ public class EquippableItem : Item
         }
     }
 
-    protected override string UniqueToolTip()
+    protected override string UniqueToolTip(EquippableItem equippedItem)
     {
-        return $"Equip {_itemName}";
+        return $"Equip {ItemName}";
     }
 
     // return true if there is a succesful use case
     internal virtual bool UseOn(Interactable interactable, Player player)
     {
         return false;
+    }
+
+    // for running animations on the item
+    public virtual IEnumerator Animate()
+    {
+        yield break;
     }
 }

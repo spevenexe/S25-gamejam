@@ -53,7 +53,7 @@ public class PlayerInteract : MonoBehaviour
                 EquipSlot.ClearToolTip();
             else
             {
-                EquipSlot.showToolTip(Target);
+                EquipSlot.showToolTip(Target,EquippedItem);
                 Target?.highlight(_highlightOutline);
             }
         }

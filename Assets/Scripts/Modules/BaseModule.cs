@@ -14,6 +14,7 @@ public abstract class BaseModule : MonoBehaviour
     private ModuleLights _moduleLights;
     [SerializeField] protected float _volume=1f;
     [SerializeField] protected float _alarmInterval = 1.5f; 
+    [SerializeField] protected float _lightFlashInterval = 1.5f; 
     [SerializeField] protected SFXManager.ALARM_INTENSITY _alarmIntensity = SFXManager.ALARM_INTENSITY.LOW; 
 
     void Start(){
@@ -47,11 +48,22 @@ public abstract class BaseModule : MonoBehaviour
 
     protected virtual void FixModule()
     {
-        _moduleLights.ResetColor();
+        _moduleLights.ResetColorDefault();
         IsBroken = false;
         _timer = Random.Range(_timerLowRange, _timerHighRange);
     }
-    protected abstract IEnumerator PlayFixingMinigame();
+    protected virtual IEnumerator PlayFixingMinigame()
+    {
+        yield return new WaitForSeconds(_lightFlashInterval);
+        while(IsBroken)
+        {
+            _moduleLights.TurnOff();
+            yield return new WaitForSeconds(_lightFlashInterval);
+            if (IsBroken) _moduleLights.RestoreColor(); // a second check in case the module gets fixed
+            yield return new WaitForSeconds(_lightFlashInterval);
+        }
+        _moduleLights.ResetColorDefault();
+    }
     public void SetTimerRanges(float timerProgress)
     {
         _timerLowRange = timerProgress * (_timerEndLowRange - _timerStartLowRange) + _timerStartLowRange;
@@ -90,12 +102,10 @@ public class BaseModuleInspector : Editor
         base.OnInspectorGUI();
 
 
-        // float sec = secondsProperty.floatValue; 
         GUILayout.BeginHorizontal();
 
         EditorGUILayout.LabelField("Time", GUILayout.Width(45f));
         float sec = EditorGUILayout.FloatField(0, GUILayout.Width(45f));
-        // EditorGUILayout.PropertyField(secondsProperty);
 
         BaseModule baseModule = (BaseModule) target;
         if(GUILayout.Button("Decrement Timer",GUILayout.Width(120f)))

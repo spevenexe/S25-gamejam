@@ -4,12 +4,13 @@ public class MidGame : MonoBehaviour
 {
 
     // mechanic scripts to access
-    [SerializeField] private BaseModule engineModule;
-    [SerializeField] private HullBreach hullBreachModule;
+    [SerializeField] private EngineModule engineModule;
+    [SerializeField] private HullBreachManager hullBreachModule;
     [SerializeField] private Navigation navigationModule;
 
     // timer variables
     [SerializeField] private float _totalMidGameTime;
+    [SerializeField] private float _breachTimePenalty=0.6f;
     private float _timer;
     private float _timerProgress = 0;
 
@@ -29,7 +30,7 @@ public class MidGame : MonoBehaviour
     void Start()
     {
         if (navigationModule == null) navigationModule = FindAnyObjectByType<Navigation>();
-        if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreach>();
+        if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreachManager>();
         if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
 
         // create values for progression variables
@@ -44,8 +45,9 @@ public class MidGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // increase timer by deltaTime
-        _timer += Time.deltaTime;
+        // increase timer by deltaTime, only if the engine is working
+        if(!engineModule.IsBroken)
+            _timer += Time.deltaTime * Mathf.Pow(_breachTimePenalty,hullBreachModule.BreachCount());
 
         // update timerProgress
         _timerProgress = _timer / _totalMidGameTime;
@@ -65,6 +67,7 @@ public class MidGame : MonoBehaviour
         if (_timer >= _totalMidGameTime)
         {
             StartEndGame();
+            Debug.Log("Midgame complete");
             return;
         }
 

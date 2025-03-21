@@ -39,7 +39,7 @@ public class Suit : EventInteractable
         Destroy(gameObject);
     }
 
-    protected override string UniqueToolTip()
+    protected override string UniqueToolTip(EquippableItem equippedItem)
     {
         return $"Put on Suit";
     }

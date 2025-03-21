@@ -94,7 +94,9 @@ public class SFXManager : MonoBehaviour
         CRASH,
         ENGINE_BREAK,
         LEVER,
-        ALARM
+        ALARM,
+        ITEM_CLANG,
+        CREEPY_NOISE
     }
     public enum ALARM_INTENSITY
     {
