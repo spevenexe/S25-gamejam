@@ -14,31 +14,52 @@ public class ModuleLights : MonoBehaviour
 
     [SerializeField] private Color _alarmEmissionColor = Color.red;
     [SerializeField] private Color _alarmLightColor = Color.red;
+    
+    private Color _savedEmissionColor = Color.red;
+    private Color _savedLightColor = Color.red;
 
     protected virtual void Start()
     {
         lights = GetComponentsInChildren<Light>();
         material = GetComponent<MeshRenderer>().material;
-        // SetLightColor(Color.red,Color.red);
+        _savedEmissionColor = _defaultEmissionColor;
+        _savedLightColor = _defaultLightColor;
 
-        ResetColor();
+        ResetColorDefault();
+    }
+
+    public virtual void TurnOff()
+    {
+        if(lights.Length > 0) _savedLightColor = lights[0].color;
+        _savedEmissionColor = material.GetColor("_EmissionColor");
+        SetLightColor(Color.black);
+        foreach(Light l in lights)
+            l.enabled = false;
+    }
+
+    private void TurnOn()
+    {
+        foreach(Light l in lights)
+            l.enabled = true;
+    }
+
+    public void RestoreColor()
+    {
+        TurnOn();
+        SetLightColor(_savedEmissionColor,_savedLightColor);
     }
 
     public virtual void SetLightColor(Color emissionColor, Color lightColor)
     {
+        TurnOn();
         foreach(Light l in lights)
             l.color = lightColor;
         material.SetColor("_EmissionColor",emissionColor);
     }
 
-    public virtual void SetLightColor(Color color)
-    {
-        foreach(Light l in lights)
-            l.color = color;
-        material.SetColor("_EmissionColor",color);
-    }
+    public virtual void SetLightColor(Color color) => SetLightColor(color,color);
     
-    public void ResetColor() => SetLightColor(_defaultEmissionColor,_defaultLightColor);
+    public void ResetColorDefault() => SetLightColor(_defaultEmissionColor,_defaultLightColor);
     public void SetAlarmColor() => SetLightColor(_alarmEmissionColor,_alarmLightColor);
 }
 
@@ -58,7 +79,17 @@ public class ModuleLightsEditor : Editor
 
         if(GUILayout.Button("Reset",GUILayout.Width(90f)))
         {
-            ml.ResetColor();
+            ml.ResetColorDefault();
+        }
+
+        if(GUILayout.Button("Turn on",GUILayout.Width(90f)))
+        {
+            ml.RestoreColor();
+        }
+
+        if(GUILayout.Button("Turn off",GUILayout.Width(90f)))
+        {
+            ml.TurnOff();
         }
     }
 }

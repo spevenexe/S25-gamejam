@@ -18,7 +18,7 @@ public class Fire : Interactable
         }
     }
 
-    protected override string UniqueToolTip()
+    protected override string UniqueToolTip(EquippableItem equippedItem)
     {
         throw new System.NotImplementedException();
     }

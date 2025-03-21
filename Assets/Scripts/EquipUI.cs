@@ -24,12 +24,12 @@ public class EquipUI : MonoBehaviour
             cameraTransform = transform.parent;
     }
 
-    internal void showToolTip(Interactable target)
+    internal void showToolTip(Interactable target, EquippableItem equippedItem)
     {
         if (target == null) 
             _centerTooltipText.text = "";
         else
-            _centerTooltipText.text = target.MessageTooltip();
+            _centerTooltipText.text = target.MessageTooltip(equippedItem);
     }
 
     internal void ClearToolTip()

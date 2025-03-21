@@ -1,16 +1,16 @@
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class MidGame : MonoBehaviour
 {
 
     // mechanic scripts to access
-    [SerializeField] private BaseModule engineModule;
-    [SerializeField] private HullBreach hullBreachModule;
+    [SerializeField] private EngineModule engineModule;
+    [SerializeField] private HullBreachManager hullBreachModule;
     [SerializeField] private Navigation navigationModule;
 
     // timer variables
     [SerializeField] private float _totalMidGameTime;
+    [SerializeField] private float _breachTimePenalty=0.6f;
     private float _timer;
     private float _timerProgress = 0;
 
@@ -29,10 +29,14 @@ public class MidGame : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (navigationModule == null) navigationModule = FindAnyObjectByType<Navigation>();
+        if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreachManager>();
+        if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
+
         // create values for progression variables
-        navigationModule.SetNavMultipler(_timerProgress);
-        hullBreachModule.SetTimerRanges(_timerProgress);
-        engineModule.SetTimerRanges(_timerProgress);
+        navigationModule?.SetNavMultipler(_timerProgress);
+        hullBreachModule?.SetTimerRanges(_timerProgress);
+        engineModule?.SetTimerRanges(_timerProgress);
 
         // need to make sure engine timer is set
 
@@ -41,27 +45,30 @@ public class MidGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // increase timer by deltaTime
-        _timer += Time.deltaTime;
+        // increase timer by deltaTime, only if the engine is working
+        if(!engineModule.IsBroken)
+            _timer += Time.deltaTime * Mathf.Pow(_breachTimePenalty,hullBreachModule.BreachCount());
 
         // update timerProgress
         _timerProgress = _timer / _totalMidGameTime;
 
         // decrement timer for engineModule
-        engineModule.DecrementTimer(Time.deltaTime);
+        engineModule?.DecrementTimer(Time.deltaTime);
 
         // decrement timer for hullBreachModule
-        hullBreachModule.adjustBreachTimer(Time.deltaTime);
+        hullBreachModule?.adjustBreachTimer(Time.deltaTime);
 
         // give timerProgress to each of the modules
-        navigationModule.SetNavMultipler(_timerProgress);
-        hullBreachModule.SetTimerRanges(_timerProgress);
-        engineModule.SetTimerRanges(_timerProgress);
+        navigationModule?.SetNavMultipler(_timerProgress);
+        hullBreachModule?.SetTimerRanges(_timerProgress);
+        engineModule?.SetTimerRanges(_timerProgress);
 
         // end the game when timer up
         if (_timer >= _totalMidGameTime)
         {
             StartEndGame();
+            Debug.Log("Midgame complete");
+            Destroy(this);
         }
 
         /*

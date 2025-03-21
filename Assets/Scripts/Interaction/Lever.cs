@@ -17,7 +17,6 @@ public class Lever : EventInteractable{
     public LeverState CorrectState = LeverState.up;
 
     private LeverLight _leverLight;
-    [SerializeField] private GameObject [] _parts;
     private List<Material> _outlines = new List<Material>();
 
     protected override void OnEnable()
@@ -75,7 +74,7 @@ public class Lever : EventInteractable{
     private void Switch()
     {
         _leverState = (LeverState) (((int)_leverState + 1 )% 2) ;
-        if(_leverState == CorrectState) _leverLight.ResetColor();
+        if(_leverState == CorrectState) _leverLight.ResetColorDefault();
         else _leverLight.SetAlarmColor();
     }
     
@@ -84,7 +83,7 @@ public class Lever : EventInteractable{
         _leverState = newState;
         if(_leverState == CorrectState) 
         {
-            _leverLight.ResetColor();
+            _leverLight.ResetColorDefault();
             _canInteract = true;
         }
         else if(_leverState == LeverState.off) 
@@ -117,7 +116,7 @@ public class Lever : EventInteractable{
         }
     }
 
-    protected override String UniqueToolTip()
+    protected override String UniqueToolTip(EquippableItem equippedItem)
     {
         return $"Flick Lever";
     }
