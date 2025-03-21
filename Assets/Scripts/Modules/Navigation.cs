@@ -2,22 +2,39 @@ using UnityEngine;
 
 public class Navigation : MonoBehaviour
 {
-    [SerializeField] private float _navStartMultiplier;
-    [SerializeField] private float _navEndMultiplier;
+    [SerializeField] [Min(0f)] private float _navStartMultiplier;
+    [SerializeField] [Min(0f)] private float _navEndMultiplier;
+    [SerializeField] [Range(0f,1f)] private float _penaltyMultiplier=0.01f;
     private float _navMultiplier;
+    private float _currentPenalty = 0;
+
+    // when this value is large, the penalty is worse. Subtract this from progress
+    // the fancy math prevents underflow from multiplying very small numbers
+    public float OffCoursePenalty{get => Mathf.Pow(Mathf.Log10(_currentPenalty+_penaltyMultiplier+_navMultiplier),10);}
+
+    [SerializeField] private Monitor _monitor;
+
+    void Start()
+    {
+        if (_monitor) _monitor.InteractionTriggers+=Navigate;
+    }
+
+    void Update()
+    {
+        // _currentPenalty=Mathf.Min(1f,_currentPenalty+Time.deltaTime);
+        _currentPenalty+=Time.deltaTime;
+    }
 
     public void SetNavMultipler(float timerProgress)
     {
         _navMultiplier = timerProgress * (_navEndMultiplier - _navStartMultiplier) + _navStartMultiplier;
     }
 
-    // TODO Keianna
     private void Navigate()
     {
-
-        //Interact with controller to set the ship on course to the moon
-
         //While navigating, set nav multiplier to 1 because the ship is on course to the moon
+        _currentPenalty = 0f;
+
 
     } 
 

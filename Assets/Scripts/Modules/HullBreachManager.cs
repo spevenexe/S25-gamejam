@@ -28,6 +28,7 @@ public class HullBreachManager : MonoBehaviour
         }
         _breaches = new HullBreach[_breachSpots.Length];
         _breachPrefab = Resources.Load<HullBreach>("Interactables/Breach");
+        StartNewBreachTimer();
     }
 
     // make sure to call this on start too, to initialize the values

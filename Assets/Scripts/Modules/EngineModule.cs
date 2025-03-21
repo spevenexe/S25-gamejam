@@ -35,8 +35,6 @@ public class EngineModule : BaseModule
 
     protected override IEnumerator PlayFixingMinigame()
     {
-        StartCoroutine(base.PlayFixingMinigame());
-
         // make sure at least one lever is in the wrong state
         if (levers.Length > 0)
             levers[0].CorrectState =(Lever.LeverState) (((int)levers[0].CorrectState + 1) % 2);
