@@ -5,12 +5,14 @@ using UnityEditor.VersionControl;
 using UnityEngine;
 
 [RequireComponent(typeof(TMP_Text))]
-public class MainUI : MonoBehaviour
+public class AnnouncmentBox : MonoBehaviour
 {
-    public static MainUI Instance;
+    public static AnnouncmentBox Instance;
 
     private TMP_Text _announcmentBox;
     [SerializeField] private float _messageTime=3f;
+    public float MessageTime {get;}
+    [SerializeField] private int _maxNumMessages=1;
     private List<string> _messageQueue = new(); 
 
     void Awake()
@@ -24,11 +26,6 @@ public class MainUI : MonoBehaviour
     void Start()
     {
         _announcmentBox = GetComponent<TMP_Text>();
-        _messageQueue.Add("test 1");
-        _messageQueue.Add("test 2");
-        _messageQueue.Add("test 3");
-        _messageQueue.Add("test 4");
-        _messageQueue.Add("test 5");
         StartCoroutine(ShowMessages());
     }
 
@@ -37,13 +34,13 @@ public class MainUI : MonoBehaviour
         while(true)
         {
             string message = "";
-            int maxNumMessages = Mathf.Min(3,_messageQueue.Count);
-            if (maxNumMessages > 0)
+            int numMessages = Mathf.Min(_maxNumMessages,_messageQueue.Count);
+            if (numMessages > 0)
             {
-                for(int i = 0; i < maxNumMessages-1; i++)
+                for(int i = 0; i < numMessages-1; i++)
                     message+=$"{_messageQueue[i]}\n";
-                message+=_messageQueue[maxNumMessages-1];
-                _messageQueue.RemoveRange(0,maxNumMessages);
+                message+=_messageQueue[numMessages-1];
+                _messageQueue.RemoveRange(0,numMessages);
             }
             _announcmentBox.text = message;
             yield return new WaitForSeconds(_messageTime);
@@ -53,6 +50,11 @@ public class MainUI : MonoBehaviour
     public static void EnqueueMessage(string message)
     {
         Instance._messageQueue.Add(message);
+    }
+        
+    public static void EnqueueMessage(string[] messages)
+    {
+        foreach(string msg in messages) EnqueueMessage(msg);
     }    
 
 }

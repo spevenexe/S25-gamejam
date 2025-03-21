@@ -81,7 +81,7 @@ public class HullBreach : InteractbleWithItem
             HullBreach hb = Instantiate(_infestedHullBreach,transform.position,transform.rotation);
             hb.transform.localScale*=1.2f;
             hb.Infested = true;
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
