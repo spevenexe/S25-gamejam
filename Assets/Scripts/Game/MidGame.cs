@@ -90,6 +90,7 @@ public class MidGame : MonoBehaviour
         _progressBar.SetProgress(_timerProgress);
 
         // decrement timers
+        navigationModule?.UpdateNavStatus();
         engineModule?.DecrementTimer(Time.deltaTime);
         hullBreachModule?.adjustBreachTimer(Time.deltaTime);
         foreach(BaseModule bm in _modules)

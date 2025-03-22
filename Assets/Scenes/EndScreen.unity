@@ -1269,7 +1269,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1620497970}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: PlayGame
+        m_MethodName: ReturnToTitle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

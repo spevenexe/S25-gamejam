@@ -22,6 +22,11 @@ public class MainMenu : MonoBehaviour
 
     public void ReturnToTitle()
     {
-        LevelLoader.Instance.LoadNext(0,LevelLoader.TransitionType.FADE);
+        LevelLoader.Instance.LoadNext(0,LevelLoader.TransitionType.FADE,1f);
+    }
+
+    public void TryAgain()
+    {
+        LevelLoader.Instance.LoadNext(1,LevelLoader.TransitionType.FADE);
     }
 }

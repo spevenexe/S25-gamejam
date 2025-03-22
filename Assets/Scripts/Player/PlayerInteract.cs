@@ -93,11 +93,13 @@ public class PlayerInteract : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.rotation = Quaternion.identity;
         HauledItem = item;
+        HauledItem.CanMakeNoise = true;
     }
 
     public void DropHauledItem()
     {
         Rigidbody rb = HauledItem.rb;
+        HauledItem.startSoundFallOff();
         HauledItem = null;
         rb.useGravity = true;
         rb.excludeLayers = LayerMask.GetMask("Nothing"); 
@@ -116,6 +118,7 @@ public class PlayerInteract : MonoBehaviour
         // item.transform.SetPositionAndRotation(Vector3.zero,Quaternion.identity);
         // item.transform.rotation = Quaternion.identity;
         item.gameObject.layer = LayerMask.NameToLayer("UI");
+        item.CanMakeNoise = true;
 
         EquippedItem = item;
         // EquippedItem.transform.SetParent(EquipSlot.transform,true);
@@ -130,7 +133,7 @@ public class PlayerInteract : MonoBehaviour
 
         EquippedItem.gameObject.layer = LayerMask.NameToLayer("Interactable");
         StartCoroutine(EquipSlot.LerpItemToFloor(EquippedItem,_hauledItemSlotTransform));
-        
+        EquippedItem.startSoundFallOff();
         EquippedItem = null;
         EquipSlot.BottomRightText.text = "";
     }

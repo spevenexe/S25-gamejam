@@ -33,12 +33,12 @@ public class LevelLoader : MonoBehaviour
     //     DontDestroyOnLoad(fadeGroup.gameObject);
     // }
 
-    public void LoadNext(TransitionType fadeType)
+    public void LoadNext(TransitionType fadeType,float waitTime = 2f)
     {
-        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex+1,fadeType));
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex+1,fadeType,waitTime));
     }
 
-    private IEnumerator LoadLevel(int buildIndex, TransitionType fadeType)
+    private IEnumerator LoadLevel(int buildIndex, TransitionType fadeType,float waitTime)
     {
         switch(fadeType)
         {
@@ -51,13 +51,19 @@ public class LevelLoader : MonoBehaviour
             default:
                 break;
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(waitTime);
 
         SceneManager.LoadScene(buildIndex % SceneManager.sceneCountInBuildSettings);
     }
 
-    public void LoadNext(int buildIndex,TransitionType fadeType)
+    public void LoadNext(int buildIndex,TransitionType fadeType,float waitTime = 2f)
     {
-        StartCoroutine(LoadLevel(buildIndex,fadeType));
+        StartCoroutine(LoadLevel(buildIndex,fadeType,waitTime));
+    }
+
+    public void LoadNext(Scene scene,TransitionType fadeType,float waitTime = 2f)
+    {
+        int buildIndex = scene.buildIndex;
+        StartCoroutine(LoadLevel(buildIndex,fadeType,waitTime));
     }
 }

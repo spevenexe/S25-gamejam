@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Navigation : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Navigation : MonoBehaviour
     [SerializeField] [Min(0f)] private float _timeWithoutNavigationUntilFailure = 20f;
     [SerializeField] private string _warningMessage;
     private bool _sentWarning = false;
+    private bool isGamingOver = false;
 
     // when this value is large, the penalty is worse. Subtract this from progress
     // the fancy math prevents underflow from multiplying very small numbers
@@ -37,16 +39,27 @@ public class Navigation : MonoBehaviour
         _monitor.InteractionTriggers-=Navigate;
     }
 
-    void Update()
+    public void UpdateNavStatus()
     {
-        // _currentPenalty=Mathf.Min(1f,_currentPenalty+Time.deltaTime);
         _currentPenalty+=Time.deltaTime;
-
-        if(_currentPenalty >= _timeWithoutNavigationUntilFailure / 2 && !_sentWarning)
+        if (_currentPenalty >= _timeWithoutNavigationUntilFailure)
+        {
+            GameOver();
+        }else if(_currentPenalty >= _timeWithoutNavigationUntilFailure / 2 && !_sentWarning)
         {
             _sentWarning = true;
             AnnouncmentBox.EnqueueMessage(_warningMessage);
         }
+    }
+
+    void GameOver()
+    {
+        if(isGamingOver) return;
+        isGamingOver = true;
+        SFXManager.PlaySound(SFXManager.SoundType.CRASH,1f);
+        SFXManager.PlaySound(SFXManager.SoundType.ENGINE_BREAK,.4f);
+        SFXManager.PlaySound(SFXManager.SoundType.CREEPY_NOISE,.1f);
+        LevelLoader.Instance.LoadNext(SceneManager.sceneCountInBuildSettings-1,LevelLoader.TransitionType.FADE);
     }
 
     public void SetNavMultipler(float timerProgress)

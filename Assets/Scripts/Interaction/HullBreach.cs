@@ -24,6 +24,39 @@ public class HullBreach : InteractbleWithItem
         }
 
         gameObject.layer = LayerMask.NameToLayer("Interactable");
+        
+        // for meshes located on the object itself
+        MeshFilter mf;
+        if(TryGetComponent(out mf))
+        {
+            Mesh mesh = GetComponent<MeshFilter>().mesh;
+            mesh.subMeshCount+=1;
+            mesh.SetTriangles(mesh.triangles,mesh.subMeshCount-1);
+            MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+            List<Material> materials = new(meshRenderer.materials);
+            // try and find the outline material
+            Material outline = null;
+            foreach (Material m in materials)
+            {
+                if(m.name.IndexOf("InkingMaterial") >= 0) outline = m;
+            }
+            // if we can't find it, load it
+            if (outline == null)
+            {
+                Material mat = Resources.Load<Material>("Materials/InkingMaterial");
+                if(mat == null) Debug.LogWarning("material not found");
+                else
+                {
+                    outline = new Material(mat);
+                    materials.Add(outline);
+                    meshRenderer.SetMaterials(materials);
+                }
+            }
+            _outlines.Add(_outline);
+        }
+
+
+        // for meshes on object children
         foreach(GameObject part in _parts)
         {
             SkinnedMeshRenderer skinnedMR;
@@ -92,7 +125,7 @@ public class HullBreach : InteractbleWithItem
         // use the item
 
         EquippableItem item = player.PlayerInteract.EquippedItem;
-        if(item != null && item.ItemName == _correctItem)
+        if(item != null && item.it == _correctItem)
         {
             SFXManager.PlaySound(SFXManager.SoundType.HAMMER_BONK,item.ClangVolume);
             BreachDestroyedOnce = true;

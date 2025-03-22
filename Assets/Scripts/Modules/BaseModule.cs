@@ -30,7 +30,7 @@ public abstract class BaseModule : MonoBehaviour
     [SerializeField] private BoxCollider _invisibleWall;
     [SerializeField] private Door _door;
 
-    void Start(){
+    protected virtual void Start(){
         _timer = Random.Range(_timerStartLowRange, _timerStartHighRange);
         IsBroken = false;
         _moduleLights = GetComponentInChildren<ModuleLights>();
@@ -212,8 +212,6 @@ public class BaseModuleInspector : Editor
         
         GUILayout.EndHorizontal();
 
-        if(GUILayout.Button("Eject ",GUILayout.Width(120f)))
-            baseModule.Eject();
         if(GUILayout.Button("Eject ",GUILayout.Width(120f)))
             baseModule.Eject();
     }
