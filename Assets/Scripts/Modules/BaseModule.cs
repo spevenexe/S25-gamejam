@@ -38,7 +38,7 @@ public abstract class BaseModule : MonoBehaviour
         _invisibleWall.enabled = false;
     }
 
-    protected virtual void BreakModule()
+    public virtual void BreakModule()
     {        
         // set a public variable flag, which MidGame.cs can read to indicate its broken
         IsBroken = true;

@@ -16,7 +16,7 @@ public class EngineModule : BaseModule
         levers = leverGroup.GetComponentsInChildren<Lever>();
     }
 
-    protected override void BreakModule()
+    public override void BreakModule()
     {
         engine.Break();
         base.BreakModule();

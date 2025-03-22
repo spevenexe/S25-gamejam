@@ -13,7 +13,7 @@ public class AnnouncmentBox : MonoBehaviour
     [SerializeField] private float _messageTime=3f;
     public float MessageTime {get;}
     [SerializeField] private int _maxNumMessages=1;
-    private List<string> _messageQueue = new(); 
+    public List<string> _messageQueue = new(); 
 
     void Awake()
     {
