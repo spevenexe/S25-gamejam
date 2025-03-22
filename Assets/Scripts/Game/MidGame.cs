@@ -20,6 +20,8 @@ public class MidGame : MonoBehaviour
     private float _timer = 0;
     private float _timerProgress = 0;
 
+    [SerializeField] private ProgressBar _progressBar;
+
     /*
     // game state variables (not used yet)
     private bool _isEarlyGame;
@@ -40,7 +42,7 @@ public class MidGame : MonoBehaviour
         if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreachManager>();
         if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
         if (_window == null) _window = FindAnyObjectByType<Window>();
-        if (_window == null) _window = FindAnyObjectByType<Window>();
+        if (_progressBar == null) _progressBar = FindAnyObjectByType<ProgressBar>();
 
         // create values for progression variables
         navigationModule?.SetNavMultipler(_timerProgress);
@@ -61,6 +63,8 @@ public class MidGame : MonoBehaviour
 
         _timer = 0;
         _timerProgress = 0;
+        _progressBar.gameObject.SetActive(true);
+        _progressBar.enabled = true;
     }
 
     // Update is called once per frame
@@ -76,6 +80,7 @@ public class MidGame : MonoBehaviour
         // update timerProgress
         _timerProgress = _timer / _totalMidGameTime;
         _window.SetScale(_timerProgress);
+        _progressBar.SetProgress(_timerProgress);
 
         // decrement timers
         engineModule?.DecrementTimer(Time.deltaTime);
