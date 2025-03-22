@@ -1,19 +1,26 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EndGame : MonoBehaviour
 {
+    
+    public List<BaseModule> Modules;
 
-    public GameObject _owner;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        Modules = new();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start() => StartCoroutine(StartEjectionSequenceHelper());
+
+    private IEnumerator StartEjectionSequenceHelper()
     {
-        
+        foreach(BaseModule b in Modules)
+        {
+            AnnouncmentBox.EnqueueMessage($"{b.name} compromised. exit module".ToUpper());
+            b.Eject();
+            yield return new WaitForSeconds(b.EjectTime);
+        }
     }
 }

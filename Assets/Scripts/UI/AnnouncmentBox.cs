@@ -33,6 +33,12 @@ public class AnnouncmentBox : MonoBehaviour
     {
         while(true)
         {
+            if (_messageQueue.Count ==0)
+            {
+                yield return null;
+                continue;
+            }
+
             string message = "";
             int numMessages = Mathf.Min(_maxNumMessages,_messageQueue.Count);
             if (numMessages > 0)

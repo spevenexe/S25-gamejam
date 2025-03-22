@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ScreenMaterial
+  m_Name: HelmMonitorScreenMaterial
   m_Shader: {fileID: -6465566751694194690, guid: d65148b937e30ef4a801c36d12f9b280, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Screen_Sprite:
-        m_Texture: {fileID: 2800000, guid: 31b59531f02c68c4898671f65b4ce83e, type: 3}
+        m_Texture: {fileID: 2800000, guid: c3c52c182fa273f4598f132371f861b3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -67,8 +67,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _Blur_Offset: 1
-    - _Num_Scan_Lines: 50
-    - _Scan_Line_Speed: 0.05
+    - _Num_Scan_Lines: 20
+    - _Scan_Line_Speed: 0.1
     m_Colors:
     - _Bloom: {r: 0.02104631, g: 0.3018868, b: 0.008543914, a: 0}
     - _Chromatic_Aberration_1: {r: 0.93710685, g: 0.019697031, b: 0, a: 0}

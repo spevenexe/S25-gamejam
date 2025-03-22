@@ -208,6 +208,8 @@ public class BaseModuleInspector : Editor
 
         if(GUILayout.Button("Eject ",GUILayout.Width(120f)))
             baseModule.Eject();
+        if(GUILayout.Button("Eject ",GUILayout.Width(120f)))
+            baseModule.Eject();
     }
 }
 #endif
