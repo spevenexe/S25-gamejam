@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -13,10 +15,14 @@ public class BeginGame : MonoBehaviour
 
     // serialized variables
     [SerializeField] private MessageDialog beforeNavMessages;
+    [SerializeField] private MessageDialog teachNavMessages;
     [SerializeField] private MessageDialog betweenNavAndEngineMessages;
+    [SerializeField] private MessageDialog teachEngineMessages;
     [SerializeField] private MessageDialog betweenEngineAndHullBreachMessages;
+    [SerializeField] private MessageDialog teachHullBreachMessages;
     [SerializeField] private MessageDialog afterHullBreachMessages;
 
+    [SerializeField] private Transform hullBreachTutorialSpot;
     // private variables
     private int section;
     private bool isFixingModule = false;
@@ -43,11 +49,15 @@ public class BeginGame : MonoBehaviour
         }
 
         // check if modules are fixed
-        if (engineModule.IsBroken == false && section == 4)
+        if (Navigation.NagivatedOnce && section == 2)
         {
             isFixingModule = false;
         }
-        else if (hullBreachModule.BreachCount() == 0 && section == 6)
+        else if (engineModule.IsBroken == false && section == 4)
+        {
+            isFixingModule = false;
+        }
+        else if (HullBreach.BreachDestroyedOnce && section == 6)
         {
             isFixingModule = false;
         }
@@ -66,6 +76,7 @@ public class BeginGame : MonoBehaviour
         }
         if (section == 2)
         {
+            AnnouncmentBox.ClearMessages();
             betweenNavAndEngineMessages.AddMessages();
         }
         if (section == 3)
@@ -74,6 +85,7 @@ public class BeginGame : MonoBehaviour
         }
         if (section == 4)
         {
+            AnnouncmentBox.ClearMessages();
             betweenEngineAndHullBreachMessages.AddMessages();
         }
         if (section == 5)
@@ -82,32 +94,47 @@ public class BeginGame : MonoBehaviour
         }
         if (section == 6)
         {
+            AnnouncmentBox.ClearMessages();
             afterHullBreachMessages.AddMessages();
         }
         if (section >= 7)
         {
             // start midGame
-            midGameScript.enabled = true;
-            Destroy(this);
+            StartMidGame();
         }
+    }
+
+    private void StartMidGame() => StartCoroutine(StartMidGameHelper());
+
+    private IEnumerator StartMidGameHelper()
+    {
+        yield return new WaitForSeconds(10f);
+        midGameScript.enabled = true;
+        Destroy(this);
     }
 
     private void teachNavigation()
     {
-        Debug.Log("Teaching Navigation");
-        isFixingModule = false;
-        // don't know if we have nav figured out yet
+        teachNavMessages.AddMessages();
+        isFixingModule = true; 
+        Navigation.NagivatedOnce = false;
+        // kind of spaghetti code but its being handled in the nav module class
     }
+
+    public void FixNavigation() => isFixingModule = false;
 
     private void teachEngine()
     {
+        teachEngineMessages.AddMessages();
         isFixingModule = true;
         engineModule.BreakModule();
     }
 
     private void teachHullBreach()
     {
+        teachHullBreachMessages.AddMessages();
         isFixingModule = true;
-        hullBreachModule.CreateHullBreach();
+        HullBreach.BreachDestroyedOnce = false;
+        hullBreachModule.CreateHullBreach(hullBreachTutorialSpot);
     }
 }

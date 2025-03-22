@@ -100,6 +100,10 @@ public class HullBreachManager : MonoBehaviour
         _breaches[index] = breach;
     }
     
+    internal void CreateHullBreach(Transform hullBreachTutorialSpot)
+    {
+        Instantiate(_breachPrefab, hullBreachTutorialSpot.position,hullBreachTutorialSpot.rotation);
+    }
 
     // you should call this in Update()
     public void adjustBreachTimer(float deltaTime)
@@ -121,6 +125,8 @@ public class HullBreachManager : MonoBehaviour
             ret+= (b != null) ? 1 : 0;
         return ret;
     }
+
+    
 }
 
 #if UNITY_EDITOR

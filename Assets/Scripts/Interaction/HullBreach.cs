@@ -14,6 +14,8 @@ public class HullBreach : InteractbleWithItem
     public bool Infested {get;private set;} = false;
     private static HullBreach _infestedHullBreach;
 
+    public static bool BreachDestroyedOnce = false; // for tutorial
+
     protected override void Awake()
     {
         if(_infestedHullBreach == null)
@@ -79,7 +81,7 @@ public class HullBreach : InteractbleWithItem
         if(_timer <= 0)
         {
             HullBreach hb = Instantiate(_infestedHullBreach,transform.position,transform.rotation);
-            hb.transform.localScale*=1.2f;
+            hb.transform.localScale*=1.5f;
             hb.Infested = true;
             Destroy(gameObject);
         }
@@ -93,6 +95,7 @@ public class HullBreach : InteractbleWithItem
         if(item != null && item.ItemName == _correctItem)
         {
             SFXManager.PlaySound(SFXManager.SoundType.ITEM_CLANG,item.ClangVolume);
+            BreachDestroyedOnce = true;
             Destroy(gameObject); // destroy the breach after using the item
         }
     }

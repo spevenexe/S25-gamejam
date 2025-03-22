@@ -33,7 +33,7 @@ public class AnnouncmentBox : MonoBehaviour
     {
         while(true)
         {
-            if (_messageQueue.Count ==0)
+            if (_messageQueue.Count == 0 && _announcmentBox.text.Length == 0)
             {
                 yield return null;
                 continue;
@@ -63,4 +63,8 @@ public class AnnouncmentBox : MonoBehaviour
         foreach(string msg in messages) EnqueueMessage(msg);
     }    
 
+    public static void ClearMessages()
+    {
+        Instance._messageQueue.Clear();
+    }
 }

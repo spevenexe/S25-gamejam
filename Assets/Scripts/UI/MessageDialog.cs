@@ -12,5 +12,14 @@ public class MessageDialog : MonoBehaviour
         if (messages == null || messages.Length == 0) Debug.LogWarning($"No messages found at {gameObject}.");
     }
 
+    void Start()
+    {
+        for(int i = 0; i < messages.Length; i++)
+        {
+            string m = messages[i];
+            if(m.Length == 0) m+=" ";
+        }
+    }
+
     public void AddMessages() => AnnouncmentBox.EnqueueMessage(messages);
 }

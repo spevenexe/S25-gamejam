@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Navigation : MonoBehaviour
@@ -7,6 +8,7 @@ public class Navigation : MonoBehaviour
     [SerializeField] [Range(0f,1f)] private float _penaltyMultiplier=0.01f;
     private float _navMultiplier;
     private float _currentPenalty = 0;
+    public static bool NagivatedOnce = false;
 
     // when this value is large, the penalty is worse. Subtract this from progress
     // the fancy math prevents underflow from multiplying very small numbers
@@ -17,6 +19,11 @@ public class Navigation : MonoBehaviour
     void Start()
     {
         if (_monitor) _monitor.InteractionTriggers+=Navigate;
+    }
+
+    void OnDestroy()
+    {
+        _monitor.InteractionTriggers-=Navigate;
     }
 
     void Update()
@@ -35,7 +42,6 @@ public class Navigation : MonoBehaviour
         //While navigating, set nav multiplier to 1 because the ship is on course to the moon
         _currentPenalty = 0f;
 
-
+        NagivatedOnce = true;
     } 
-
 }
