@@ -35,7 +35,7 @@ public class BeginGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // increase section when no messages in Queue
+        // increase section when no messages in Queue or module is fixed
         if (!announcmentBox._messageQueue.Any() && !isFixingModule)
         {
             playAtSection();
