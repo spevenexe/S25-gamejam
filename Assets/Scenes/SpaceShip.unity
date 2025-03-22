@@ -3245,6 +3245,8 @@ MonoBehaviour:
   _navStartMultiplier: 0.01
   _navEndMultiplier: 0.5
   _penaltyMultiplier: 0.001
+  _timeWithoutNavigationUntilFailure: 20
+  _warningMessage: 
   _monitor: {fileID: 2348584922600104613}
 --- !u!1 &783270880858384508
 GameObject:
@@ -4625,11 +4627,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34c8018b1d2c7554686d9774503cb5bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.548555
+      value: -0.74
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34c8018b1d2c7554686d9774503cb5bd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.9702225
+      value: -4.912
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34c8018b1d2c7554686d9774503cb5bd, type: 3}
       propertyPath: m_LocalRotation.w

@@ -56,10 +56,17 @@ public class MidGame : MonoBehaviour
     void OnEnable()
     {
         navigationModule?.SetNavMultipler(_timerProgress);
+        navigationModule?.Init();
         hullBreachModule?.SetTimerRanges(_timerProgress);
         engineModule?.SetTimerRanges(_timerProgress);
-        
         engineModule?.InitTimer();
+
+
+        foreach(BaseModule bm in _modules)
+        {
+            bm?.SetTimerRanges(_timerProgress);
+            bm?.InitTimer();
+        }
 
         _timer = 0;
         _timerProgress = 0;

@@ -10,6 +10,10 @@ public class Navigation : MonoBehaviour
     private float _currentPenalty = 0;
     public static bool NagivatedOnce = false;
 
+    [SerializeField] [Min(0f)] private float _timeWithoutNavigationUntilFailure = 20f;
+    [SerializeField] private string _warningMessage;
+    private bool _sentWarning = false;
+
     // when this value is large, the penalty is worse. Subtract this from progress
     // the fancy math prevents underflow from multiplying very small numbers
     public float OffCoursePenalty{
@@ -37,6 +41,12 @@ public class Navigation : MonoBehaviour
     {
         // _currentPenalty=Mathf.Min(1f,_currentPenalty+Time.deltaTime);
         _currentPenalty+=Time.deltaTime;
+
+        if(_currentPenalty >= _timeWithoutNavigationUntilFailure / 2 && !_sentWarning)
+        {
+            _sentWarning = true;
+            AnnouncmentBox.EnqueueMessage(_warningMessage);
+        }
     }
 
     public void SetNavMultipler(float timerProgress)
@@ -48,12 +58,17 @@ public class Navigation : MonoBehaviour
     {
         //While navigating, set nav multiplier to 1 because the ship is on course to the moon
         _currentPenalty = 0f;
-
+        _sentWarning = false;;
         NagivatedOnce = true;
     }
 
     public void Highlight()
     {
         _monitor.highlight(Color.yellow);
-    } 
+    }
+
+    internal void Init()
+    {
+        _currentPenalty = 0f;
+    }
 }

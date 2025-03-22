@@ -19,4 +19,9 @@ public class MainMenu : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void ReturnToTitle()
+    {
+        LevelLoader.Instance.LoadNext(0,LevelLoader.TransitionType.FADE);
+    }
 }

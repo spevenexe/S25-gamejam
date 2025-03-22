@@ -55,4 +55,9 @@ public class LevelLoader : MonoBehaviour
 
         SceneManager.LoadScene(buildIndex % SceneManager.sceneCountInBuildSettings);
     }
+
+    public void LoadNext(int buildIndex,TransitionType fadeType)
+    {
+        StartCoroutine(LoadLevel(buildIndex,fadeType));
+    }
 }
