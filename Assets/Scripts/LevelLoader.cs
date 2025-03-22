@@ -1,0 +1,58 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class LevelLoader : MonoBehaviour
+{
+    [SerializeField] private CanvasGroup fadeGroup;
+    public Animator transition;
+
+    public static LevelLoader Instance;
+
+    public enum TransitionType
+    {
+        FADE,
+        CUT,
+    }
+
+    void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+
+    // void Start()
+    // {
+    //     DontDestroyOnLoad(gameObject);
+    //     DontDestroyOnLoad(fadeGroup.gameObject);
+    // }
+
+    public void LoadNext(TransitionType fadeType)
+    {
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex+1,fadeType));
+    }
+
+    private IEnumerator LoadLevel(int buildIndex, TransitionType fadeType)
+    {
+        switch(fadeType)
+        {
+            case TransitionType.FADE:
+                transition.SetTrigger("Start");
+                break;
+            case TransitionType.CUT:
+                transition.SetTrigger("Cut");
+                break;
+            default:
+                break;
+        }
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene(buildIndex % SceneManager.sceneCountInBuildSettings);
+    }
+}

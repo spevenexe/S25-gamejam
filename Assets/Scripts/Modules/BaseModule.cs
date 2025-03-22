@@ -8,7 +8,7 @@ public abstract class BaseModule : MonoBehaviour
     [SerializeField] protected float _timerStartLowRange,_timerStartHighRange;
     [SerializeField] protected float _timerEndLowRange,_timerEndHighRange;
     protected float _timerLowRange,_timerHighRange;
-    protected float _timer;
+    protected float _timer = 1000;
     public bool IsBroken {get; private set;} = false;
 
     private ModuleLights _moduleLights;
@@ -31,7 +31,7 @@ public abstract class BaseModule : MonoBehaviour
     [SerializeField] private Door _door;
 
     void Start(){
-        _timer = Random.Range(_timerLowRange, _timerHighRange);
+        _timer = Random.Range(_timerStartLowRange, _timerStartHighRange);
         IsBroken = false;
         _moduleLights = GetComponentInChildren<ModuleLights>();
         breaches = GetComponentsInChildren<HullBreach>();
@@ -87,6 +87,12 @@ public abstract class BaseModule : MonoBehaviour
         _timerLowRange = timerProgress * (_timerEndLowRange - _timerStartLowRange) + _timerStartLowRange;
         _timerHighRange = timerProgress * (_timerEndHighRange - _timerStartHighRange) + _timerStartHighRange;
     }
+
+    public void InitTimer()
+    {
+        _timer = Random.Range(_timerLowRange, _timerHighRange);
+    }
+
     public virtual void DecrementTimer(float seconds)
     {
         // decrease engineTimer by deltaTime

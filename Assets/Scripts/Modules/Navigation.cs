@@ -12,7 +12,14 @@ public class Navigation : MonoBehaviour
 
     // when this value is large, the penalty is worse. Subtract this from progress
     // the fancy math prevents underflow from multiplying very small numbers
-    public float OffCoursePenalty{get => Mathf.Pow(Mathf.Log10(_currentPenalty+_penaltyMultiplier+_navMultiplier),10);}
+    public float OffCoursePenalty{
+        get
+        {
+            
+            float logSum = Mathf.Log10(_currentPenalty)+Mathf.Log10(_penaltyMultiplier)+Mathf.Log10(_navMultiplier);
+            return Mathf.Pow(10,logSum);
+        }
+    }
 
     [SerializeField] private Monitor _monitor;
 
@@ -43,5 +50,10 @@ public class Navigation : MonoBehaviour
         _currentPenalty = 0f;
 
         NagivatedOnce = true;
+    }
+
+    public void Highlight()
+    {
+        _monitor.highlight(Color.yellow);
     } 
 }

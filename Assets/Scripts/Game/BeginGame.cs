@@ -29,6 +29,10 @@ public class BeginGame : MonoBehaviour
 
     // other variables
     [SerializeField] private AnnouncmentBox announcmentBox;
+    [SerializeField] private CanvasGroup fadeGroup;
+
+    [SerializeField] [Min(0)] private float _tutorialRepeatInteveral=10f;
+    private float _timer=0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,6 +45,10 @@ public class BeginGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(fadeGroup.alpha != 0) return;
+
+        _timer+=Time.deltaTime;
+
         // increase section when no messages in Queue or module is fixed
         if (!announcmentBox._messageQueue.Any() && !isFixingModule)
         {
@@ -52,15 +60,35 @@ public class BeginGame : MonoBehaviour
         if (Navigation.NagivatedOnce && section == 2)
         {
             isFixingModule = false;
+            _timer = 0;
         }
         else if (engineModule.IsBroken == false && section == 4)
         {
             isFixingModule = false;
+            _timer = 0;
         }
         else if (HullBreach.BreachDestroyedOnce && section == 6)
         {
             isFixingModule = false;
+            _timer = 0;
         }
+
+        // if(_timer >= _tutorialRepeatInteveral)
+        // {
+        //     switch(section)
+        //     {
+        //         case 1:
+        //             teachNavigation();
+        //             break;
+        //         case 2:
+        //             teachEngine();
+        //             break;
+        //         case 3:
+        //             teachHullBreach();
+        //             break;
+        //     }
+        //     _timer=0;
+        // }
     }
 
     private void playAtSection()
@@ -118,6 +146,7 @@ public class BeginGame : MonoBehaviour
         teachNavMessages.AddMessages();
         isFixingModule = true; 
         Navigation.NagivatedOnce = false;
+        navigationModule.Highlight();
         // kind of spaghetti code but its being handled in the nav module class
     }
 

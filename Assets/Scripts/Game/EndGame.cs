@@ -12,7 +12,10 @@ public class EndGame : MonoBehaviour
         Modules = new();
     }
 
-    void Start() => StartCoroutine(StartEjectionSequenceHelper());
+    void Start() 
+    {
+        StartCoroutine(StartEjectionSequenceHelper());
+    }
 
     private IEnumerator StartEjectionSequenceHelper()
     {
@@ -22,5 +25,11 @@ public class EndGame : MonoBehaviour
             b.Eject();
             yield return new WaitForSeconds(b.EjectTime);
         }
+
+        // screen shake
+
+        // crash
+        yield return new WaitForSeconds(5f);
+        LevelLoader.Instance.LoadNext(LevelLoader.TransitionType.CUT);
     }
 }

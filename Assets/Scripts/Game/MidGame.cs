@@ -48,7 +48,19 @@ public class MidGame : MonoBehaviour
         engineModule?.SetTimerRanges(_timerProgress);
 
         // need to make sure engine timer is set
+        _timer = 0;
+    }
 
+    void OnEnable()
+    {
+        navigationModule?.SetNavMultipler(_timerProgress);
+        hullBreachModule?.SetTimerRanges(_timerProgress);
+        engineModule?.SetTimerRanges(_timerProgress);
+        
+        engineModule?.InitTimer();
+
+        _timer = 0;
+        _timerProgress = 0;
     }
 
     // Update is called once per frame
@@ -63,7 +75,6 @@ public class MidGame : MonoBehaviour
 
         // update timerProgress
         _timerProgress = _timer / _totalMidGameTime;
-        _window.SetScale(_timerProgress);
         _window.SetScale(_timerProgress);
 
         // decrement timers

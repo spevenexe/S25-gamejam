@@ -94,7 +94,7 @@ public class HullBreach : InteractbleWithItem
         EquippableItem item = player.PlayerInteract.EquippedItem;
         if(item != null && item.ItemName == _correctItem)
         {
-            SFXManager.PlaySound(SFXManager.SoundType.ITEM_CLANG,item.ClangVolume);
+            SFXManager.PlaySound(SFXManager.SoundType.HAMMER_BONK,item.ClangVolume);
             BreachDestroyedOnce = true;
             Destroy(gameObject); // destroy the breach after using the item
         }
