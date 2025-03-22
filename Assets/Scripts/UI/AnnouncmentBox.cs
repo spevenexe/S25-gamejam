@@ -13,7 +13,7 @@ public class AnnouncmentBox : MonoBehaviour
     [SerializeField] private float _messageTime=3f;
     public float MessageTime {get;}
     [SerializeField] private int _maxNumMessages=1;
-    private List<string> _messageQueue = new(); 
+    public List<string> _messageQueue = new(); 
 
     void Awake()
     {
@@ -33,6 +33,12 @@ public class AnnouncmentBox : MonoBehaviour
     {
         while(true)
         {
+            if (_messageQueue.Count == 0 && _announcmentBox.text.Length == 0)
+            {
+                yield return null;
+                continue;
+            }
+
             string message = "";
             int numMessages = Mathf.Min(_maxNumMessages,_messageQueue.Count);
             if (numMessages > 0)
@@ -57,4 +63,8 @@ public class AnnouncmentBox : MonoBehaviour
         foreach(string msg in messages) EnqueueMessage(msg);
     }    
 
+    public static void ClearMessages()
+    {
+        Instance._messageQueue.Clear();
+    }
 }

@@ -94,7 +94,10 @@ public class SFXManager : MonoBehaviour
         LEVER,
         ALARM,
         ITEM_CLANG,
-        CREEPY_NOISE
+        CREEPY_NOISE,
+        HAMMER_BONK,
+        SUIT_EQUIP,
+        INTERACT_FAIL
     }
     public enum ALARM_INTENSITY
     {

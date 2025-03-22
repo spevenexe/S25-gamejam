@@ -33,6 +33,6 @@ public class Monitor : EventInteractable
 
     protected override string UniqueToolTip(EquippableItem equippedItem)
     {
-        return "Navigate";
+        return "Realign Ship Navigation";
     } 
 }

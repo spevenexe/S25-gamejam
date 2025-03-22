@@ -35,7 +35,7 @@ public class Suit : EventInteractable
 
     public override void Interact(Player player)
     {
-        Debug.Log("I put on the suit");
+        SFXManager.PlaySound(SFXManager.SoundType.SUIT_EQUIP);
         Destroy(gameObject);
     }
 

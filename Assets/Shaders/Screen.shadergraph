@@ -25,9 +25,6 @@
             "m_Id": "6c710b40f5d4402e8d5dc102ffb1af98"
         },
         {
-            "m_Id": "62f9a1240f5b4f408fae3cf1fcbb3374"
-        },
-        {
             "m_Id": "4f6406dec4cb40018f23c992d9701842"
         }
     ],
@@ -2483,36 +2480,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
-    "m_ObjectId": "62f9a1240f5b4f408fae3cf1fcbb3374",
-    "m_Guid": {
-        "m_GuidSerialized": "602b90d0-9076-4ed4-a1fa-b1cc99cbfd16"
-    },
-    "m_Name": "Screen Image",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Screen Image",
-    "m_DefaultReferenceName": "_Screen_Image",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": {
-        "m_SerializedTexture": "",
-        "m_Guid": ""
-    },
-    "isMainTexture": false,
-    "useTilingAndOffset": false,
-    "m_Modifiable": true,
-    "m_DefaultType": 0
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "63295b1ce4074606b832d38c9bfb9c63",
     "m_Group": {
@@ -2680,9 +2647,6 @@
         },
         {
             "m_Id": "6c710b40f5d4402e8d5dc102ffb1af98"
-        },
-        {
-            "m_Id": "62f9a1240f5b4f408fae3cf1fcbb3374"
         },
         {
             "m_Id": "4f6406dec4cb40018f23c992d9701842"

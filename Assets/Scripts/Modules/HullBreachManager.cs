@@ -28,6 +28,7 @@ public class HullBreachManager : MonoBehaviour
         }
         _breaches = new HullBreach[_breachSpots.Length];
         _breachPrefab = Resources.Load<HullBreach>("Interactables/Breach");
+        StartNewBreachTimer();
     }
 
     // make sure to call this on start too, to initialize the values
@@ -77,7 +78,7 @@ public class HullBreachManager : MonoBehaviour
     }
 
     // Keianna TODO
-    private void CreateHullBreach()
+    public void CreateHullBreach()
     {
         List<Transform> openSpots = new List<Transform>();
         // get open spots
@@ -99,6 +100,10 @@ public class HullBreachManager : MonoBehaviour
         _breaches[index] = breach;
     }
     
+    internal void CreateHullBreach(Transform hullBreachTutorialSpot)
+    {
+        Instantiate(_breachPrefab, hullBreachTutorialSpot.position,hullBreachTutorialSpot.rotation);
+    }
 
     // you should call this in Update()
     public void adjustBreachTimer(float deltaTime)
@@ -120,6 +125,8 @@ public class HullBreachManager : MonoBehaviour
             ret+= (b != null) ? 1 : 0;
         return ret;
     }
+
+    
 }
 
 #if UNITY_EDITOR
