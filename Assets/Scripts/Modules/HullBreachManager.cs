@@ -77,7 +77,7 @@ public class HullBreachManager : MonoBehaviour
     }
 
     // Keianna TODO
-    private void CreateHullBreach()
+    public void CreateHullBreach()
     {
         List<Transform> openSpots = new List<Transform>();
         // get open spots

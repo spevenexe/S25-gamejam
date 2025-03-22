@@ -23,7 +23,7 @@ public abstract class BaseModule : MonoBehaviour
         _moduleLights = GetComponentInChildren<ModuleLights>();
     }
 
-    protected virtual void BreakModule()
+    public virtual void BreakModule()
     {        
         // set a public variable flag, which MidGame.cs can read to indicate its broken
         IsBroken = true;
