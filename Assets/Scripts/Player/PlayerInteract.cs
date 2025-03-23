@@ -59,6 +59,7 @@ public class PlayerInteract : MonoBehaviour
         {
             Target = HauledItem;
     
+            HauledItem.rb.linearVelocity = Vector3.zero;
             Vector3 start = HauledItem.transform.position;
             Vector3 end = _hauledItemSlotTransform.position;
             start = Vector3.ClampMagnitude(start-end,_maxFollowDistance) + end;

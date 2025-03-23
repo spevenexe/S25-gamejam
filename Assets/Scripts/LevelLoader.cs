@@ -53,7 +53,7 @@ public class LevelLoader : MonoBehaviour
         }
         yield return new WaitForSeconds(waitTime);
 
-        SceneManager.LoadScene(buildIndex % SceneManager.sceneCountInBuildSettings);
+        SceneManager.LoadSceneAsync(buildIndex % SceneManager.sceneCountInBuildSettings);
     }
 
     public void LoadNext(int buildIndex,TransitionType fadeType,float waitTime = 2f)

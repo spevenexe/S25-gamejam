@@ -376,67 +376,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1001 &322771209
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -1651487964230063519, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Name
-      value: Infested Hull Breach (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.2538178
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.046242967
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.6812525
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.59590906
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.15938632
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7037238
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.3525073
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -43.322
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -93.251
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -15.613
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
 --- !u!1 &380374818
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,6 +524,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Name
       value: Infested Hull Breach (3)
@@ -703,67 +646,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f042094a1301f943bb02433aedd93d0, type: 3}
---- !u!1001 &625157495
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -1651487964230063519, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Name
-      value: Infested Hull Breach (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.065
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.072
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -7.801
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.6146754
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.051822808
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.78151697
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.09337924
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -4.718
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -103.161
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -11.33
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
 --- !u!1001 &745104227
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1239,6 +1121,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Name
       value: Infested Hull Breach
@@ -1425,67 +1311,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1404287725
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -1651487964230063519, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_Name
-      value: Infested Hull Breach (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.294
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.096
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.559
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.13953473
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.41391963
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.59101754
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.67815846
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -43.322
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -93.251
-      objectReference: {fileID: 0}
-    - target: {fileID: 7978708059218451373, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -111.147
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
 --- !u!1 &1423671889
 GameObject:
   m_ObjectHideFlags: 0
@@ -1685,8 +1510,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285190300
-  m_fontColor: {r: 0.6106564, g: 0.81761, b: 0.41394717, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1885,6 +1710,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Name
       value: Infested Hull Breach (4)
@@ -1943,6 +1772,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -1651487964230063519, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -2007,6 +1840,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7345863678391173399, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Name
       value: Infested Hull Breach (1)
@@ -2065,6 +1902,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -1651487964230063519, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7024091765658131531, guid: 10539ed902d41fb459fc0211539b366b, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -2263,9 +2104,6 @@ SceneRoots:
   - {fileID: 469757242}
   - {fileID: 841408514}
   - {fileID: 947559449}
-  - {fileID: 625157495}
-  - {fileID: 322771209}
-  - {fileID: 1404287725}
   - {fileID: 1848533343}
   - {fileID: 1849364079}
   - {fileID: 1857412965}

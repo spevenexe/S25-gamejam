@@ -41,6 +41,7 @@ public class EquipUI : MonoBehaviour
     {
         while(equippedItem.gameObject.layer == LayerMask.NameToLayer("UI"))
         {
+            equippedItem.rb.linearVelocity = Vector3.zero;
             Vector3 start = equippedItem.transform.position;
             Vector3 end = transform.position;
             if (Vector3.Distance(start,end) > 0.1f)
@@ -82,7 +83,7 @@ public class EquipUI : MonoBehaviour
         float maxScaleZ = Mathf.Max(originalScale.z,target.localScale.z);
         while(Vector3.Distance(item.transform.position,target.position) > 0.1f)
         {
-            
+            item.rb.linearVelocity = Vector3.zero;
             Vector3 start;
             Vector3 end;
 
