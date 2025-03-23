@@ -5,14 +5,28 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private string gameScene;
 
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;    
+    }
+
     public void PlayGame()
     {
-        SceneManager.LoadScene(gameScene);
-        // won't work unless it is in build profile, whatever that means
+        LevelLoader.Instance.LoadNext(LevelLoader.TransitionType.FADE);
     }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void ReturnToTitle()
+    {
+        LevelLoader.Instance.LoadNext(0,LevelLoader.TransitionType.FADE,1f);
+    }
+
+    public void TryAgain()
+    {
+        LevelLoader.Instance.LoadNext(1,LevelLoader.TransitionType.FADE);
     }
 }

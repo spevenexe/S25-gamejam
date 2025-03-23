@@ -1,8 +1,3 @@
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-
 public class HeavyItem : Item
 {
     public override void Interact(Player player)

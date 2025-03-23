@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class BeginGame : MonoBehaviour
@@ -11,16 +14,25 @@ public class BeginGame : MonoBehaviour
     [SerializeField] private Navigation navigationModule;
 
     // serialized variables
-    [SerializeField] private string[] messages;
-    [SerializeField] private int teachNavigationPausePoint;
-    [SerializeField] private int teachEnginePausePoint;
-    [SerializeField] private int teachHullBreachPausePoint;
-    [SerializeField] private float timeBetweenMessages;
+    [SerializeField] private MessageDialog beforeNavMessages;
+    [SerializeField] private MessageDialog teachNavMessages;
+    [SerializeField] private MessageDialog betweenNavAndEngineMessages;
+    [SerializeField] private MessageDialog teachEngineMessages;
+    [SerializeField] private MessageDialog betweenEngineAndHullBreachMessages;
+    [SerializeField] private MessageDialog teachHullBreachMessages;
+    [SerializeField] private MessageDialog afterHullBreachMessages;
 
+    [SerializeField] private Transform hullBreachTutorialSpot;
     // private variables
-    private float timer;
     private int section;
-    private bool isFixingModule;
+    private bool isFixingModule = false;
+
+    // other variables
+    [SerializeField] private AnnouncmentBox announcmentBox;
+    [SerializeField] private CanvasGroup fadeGroup;
+
+    [SerializeField] [Min(0)] private float _tutorialRepeatInteveral=10f;
+    private float _timer=0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,72 +40,130 @@ public class BeginGame : MonoBehaviour
         if (navigationModule == null) navigationModule = FindAnyObjectByType<Navigation>();
         if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreachManager>();
         if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
-
-        // set timer first
-        timer = timeBetweenMessages;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // decrement timer
-        if (!isFixingModule)
-        {
-            timer -= Time.deltaTime;
-        }
+        if(fadeGroup.alpha != 0) return;
 
-        // increase section when timer = 0
-        if (timer <= 0)
+        _timer+=Time.deltaTime;
+
+        // increase section when no messages in Queue or module is fixed
+        if (!announcmentBox._messageQueue.Any() && !isFixingModule)
         {
-            timer = timeBetweenMessages;
-            playMessage();
-            if (section == teachNavigationPausePoint)
-            {
-                isFixingModule = true;
-                teachNavigation();
-            }
-            else if (section == teachEnginePausePoint)
-            {
-                isFixingModule = true;
-                teachEngine();
-            }
-            else if (section == teachHullBreachPausePoint)
-            {
-                isFixingModule = true;
-                teachHullBreach();
-            }
+            playAtSection();
             section++;
         }
 
-        // if run out of messages, start MidGame
-        if (section >= messages.Length)
+        // check if modules are fixed
+        if (Navigation.NagivatedOnce && section == 2)
         {
-            midGameScript.enabled = true;
-            Destroy(this);
+            isFixingModule = false;
+            _timer = 0;
+        }
+        else if (engineModule.IsBroken == false && section == 4)
+        {
+            isFixingModule = false;
+            _timer = 0;
+        }
+        else if (HullBreach.BreachDestroyedOnce && section == 6)
+        {
+            isFixingModule = false;
+            _timer = 0;
         }
 
+        // if(_timer >= _tutorialRepeatInteveral)
+        // {
+        //     switch(section)
+        //     {
+        //         case 1:
+        //             teachNavigation();
+        //             break;
+        //         case 2:
+        //             teachEngine();
+        //             break;
+        //         case 3:
+        //             teachHullBreach();
+        //             break;
+        //     }
+        //     _timer=0;
+        // }
     }
 
-    private void playMessage()
+    private void playAtSection()
     {
-        Debug.Log(messages[section]);
+        // Debug.Log("did a thing");
+        if (section == 0)
+        {
+            beforeNavMessages.AddMessages();
+        }
+        if (section == 1)
+        {
+            teachNavigation();
+        }
+        if (section == 2)
+        {
+            AnnouncmentBox.ClearMessages();
+            betweenNavAndEngineMessages.AddMessages();
+        }
+        if (section == 3)
+        {
+            teachEngine();
+        }
+        if (section == 4)
+        {
+            AnnouncmentBox.ClearMessages();
+            betweenEngineAndHullBreachMessages.AddMessages();
+        }
+        if (section == 5)
+        {
+            teachHullBreach();
+        }
+        if (section == 6)
+        {
+            AnnouncmentBox.ClearMessages();
+            afterHullBreachMessages.AddMessages();
+        }
+        if (section >= 7)
+        {
+            // start midGame
+            StartMidGame();
+        }
+    }
+
+    private void StartMidGame() => StartCoroutine(StartMidGameHelper());
+
+    private IEnumerator StartMidGameHelper()
+    {
+        yield return new WaitForSeconds(10f);
+        midGameScript.enabled = true;
+        Destroy(this);
     }
 
     private void teachNavigation()
     {
-        Debug.Log("Teaching Navigation");
-        isFixingModule = false;
+        teachNavMessages.AddMessages();
+        isFixingModule = true; 
+        Navigation.NagivatedOnce = false;
+        navigationModule.Highlight();
+        // kind of spaghetti code but its being handled in the nav module class
     }
+
+    public void FixNavigation() => isFixingModule = false;
 
     private void teachEngine()
     {
-        Debug.Log("Teaching Engine");
-        isFixingModule = false;
+        teachEngineMessages.AddMessages();
+        isFixingModule = true;
+        engineModule.BreakModule();
     }
 
     private void teachHullBreach()
     {
-        Debug.Log("Teaching Hull Breaches");
-        isFixingModule = false;
+        teachHullBreachMessages.AddMessages();
+        isFixingModule = true;
+        HullBreach.BreachDestroyedOnce = false;
+        hullBreachModule.CreateHullBreach(hullBreachTutorialSpot);
     }
 }

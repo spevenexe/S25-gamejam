@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,7 +21,11 @@ public class Player : MonoBehaviour
 
     private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop();
 
-    private void Use(InputAction.CallbackContext context) => PlayerInteract.Target?.Interact(this);
+    private void Use(InputAction.CallbackContext context)
+    {
+        if(PlayerInteract.Target == null) SFXManager.PlaySound(SFXManager.SoundType.INTERACT_FAIL,0.3f);
+        else PlayerInteract.Target?.Interact(this);
+    }
 
     void OnDisable()
     {

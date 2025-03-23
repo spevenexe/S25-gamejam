@@ -30,7 +30,7 @@ public class ModuleLights : MonoBehaviour
 
     public virtual void TurnOff()
     {
-        if(lights.Length > 0) _savedLightColor = lights[0].color;
+        if(lights != null && lights.Length > 0) _savedLightColor = lights[0].color;
         _savedEmissionColor = material.GetColor("_EmissionColor");
         SetLightColor(Color.black);
         foreach(Light l in lights)

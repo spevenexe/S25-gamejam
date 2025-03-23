@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(MeshRenderer),typeof(MeshFilter))]
 public abstract class Interactable : MonoBehaviour
 {
     [SerializeField] protected bool _canInteract = true;
