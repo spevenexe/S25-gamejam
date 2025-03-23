@@ -9,14 +9,16 @@ public class Monitor : EventInteractable
     protected override void OnEnable()
     {
         base.OnEnable();
-        InteractionTriggers+= () => SFXManager.PlaySound(SFXManager.SoundType.BUTTON);
+        InteractionTriggers+=PlaySound;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        InteractionTriggers-= () => SFXManager.PlaySound(SFXManager.SoundType.BUTTON);
+        InteractionTriggers-=PlaySound;
     }
+
+    private void PlaySound() => SFXManager.PlaySound(SFXManager.SoundType.BUTTON);
 
     public override void Interact(Player player)
     {

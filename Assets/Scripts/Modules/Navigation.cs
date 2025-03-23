@@ -29,14 +29,14 @@ public class Navigation : MonoBehaviour
 
     [SerializeField] private Monitor _monitor;
 
-    void Start()
+    void OnEnable()
     {
         if (_monitor) _monitor.InteractionTriggers+=Navigate;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
-        _monitor.InteractionTriggers-=Navigate;
+        if (_monitor) _monitor.InteractionTriggers-=Navigate;
     }
 
     public void UpdateNavStatus()

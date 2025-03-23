@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+// TODO: This is Hella slow. Fix Awake()
 public class HullBreach : InteractbleWithItem
 {
     private List<Material> _outlines = new List<Material>();
