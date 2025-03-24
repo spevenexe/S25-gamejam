@@ -56,7 +56,7 @@ public class HullBreach : InteractbleWithItem
             _outlines.Add(_outline);
         }
 
-
+        /*
         // for meshes on object children
         foreach(GameObject part in _parts)
         {
@@ -98,7 +98,7 @@ public class HullBreach : InteractbleWithItem
                 }
             }
             _outlines.Add(outline);
-        }
+        }*/
     }
 
     protected override void Start()
