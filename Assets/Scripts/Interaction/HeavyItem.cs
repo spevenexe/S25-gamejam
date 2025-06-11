@@ -1,12 +1,12 @@
 public class HeavyItem : Item
 {
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
-        EquippableItem heldItem = player.PlayerInteract.EquippedItem; // this may be useful?
+        EquippableItem heldItem = player.EquippedItem; // this may be useful?
         // drop the heavy item we are holding
-        if(this == player.PlayerInteract.HauledItem)
+        if(this == player.HauledItem)
         {
-            player.PlayerInteract.DropHauledItem();
+            player.DropHeavyEvent.Invoke();
         }
         // we must have a held item
         else if (heldItem != null && heldItem.UseOn(this,player))
@@ -14,7 +14,7 @@ public class HeavyItem : Item
         }
         // pick up the item if we can 
         else {
-            player.PlayerInteract.Haul(this);
+            player.HaulEvent.Invoke(this);
         }
     }
 

@@ -2,12 +2,12 @@
 public class Fire : Interactable
 {
     //public float fireDamage = 10f; // damage per second
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
         // use the item
-        if(player.PlayerInteract.EquippedItem != null)
+        if(player.EquippedItem != null)
         {
-            EquippableItem item = player.PlayerInteract.EquippedItem as EquippableItem;
+            EquippableItem item = player.EquippedItem as EquippableItem;
             if(item != null && item.UseOn(this, player))
             {
                 Destroy(gameObject); // destroy the fire object after using the item

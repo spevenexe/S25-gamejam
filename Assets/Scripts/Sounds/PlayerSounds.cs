@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class PlayerSounds : MonoBehaviour
+public class PlayerSounds : PlayerSystem
 {
-    public Action FootstepEvent;
+    public event Action FootstepEvent;
     private PlayerMovement _playerMovement;
     private int _currentFoot = 0;
 
@@ -20,8 +20,9 @@ public class PlayerSounds : MonoBehaviour
         FootstepEvent-=playFootsep;
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _playerMovement = GetComponent<PlayerMovement>();
         _timeToNextFootstep = 0;
     }
@@ -33,7 +34,7 @@ public class PlayerSounds : MonoBehaviour
         if(_playerMovement.IsMoving()&& _timeToNextFootstep <=0)
         {
             FootstepEvent.Invoke();
-            _timeToNextFootstep = 1 / (_footstep_frequency * (_playerMovement.CurrentSpeed/3f));
+            _timeToNextFootstep = 1 / (_footstep_frequency * (player.CurrentSpeed/3f));
         }
 
         _timeToNextFootstep-=Time.deltaTime;

@@ -20,7 +20,7 @@ public class Monitor : EventInteractable
 
     private void PlaySound() => SFXManager.PlaySound(SFXManager.SoundType.BUTTON);
 
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
         base.Interact(player);
         StartCoroutine(ButtonCooldown());

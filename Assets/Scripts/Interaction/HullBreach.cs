@@ -77,11 +77,11 @@ public class HullBreach : InteractbleWithItem
         }
     }
 
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
         // use the item
 
-        EquippableItem item = player.PlayerInteract.EquippedItem;
+        EquippableItem item = player.EquippedItem;
         if(item != null && item.it == _correctItem)
         {
             SFXManager.PlaySound(SFXManager.SoundType.HAMMER_BONK,item.ClangVolume);

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PData))]
 public abstract class PlayerSystem : MonoBehaviour
 {
     protected PData player;

@@ -5,17 +5,17 @@ public class EquippableItem : Item
 {
     [SerializeField] public Vector3 targetRotation;
 
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
         // use the item
-        if(player.PlayerInteract.EquippedItem == this)
+        if(player.EquippedItem == this)
         {
             UseOn(null,player);
         }
         // pick it up
-        else if(player.PlayerInteract.EquippedItem == null)
+        else if(player.EquippedItem == null)
         {
-            player.PlayerInteract.Equip(this);
+            player.EquipEvent.Invoke(this);
         }
     }
 
@@ -25,7 +25,7 @@ public class EquippableItem : Item
     }
 
     // return true if there is a succesful use case
-    internal virtual bool UseOn(Interactable interactable, PInput player)
+    internal virtual bool UseOn(Interactable interactable, PData player)
     {
         return false;
     }

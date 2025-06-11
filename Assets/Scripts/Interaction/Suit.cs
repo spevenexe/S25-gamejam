@@ -33,7 +33,7 @@ public class Suit : EventInteractable
         }
     }
 
-    public override void Interact(PInput player)
+    public override void Interact(PData player)
     {
         SFXManager.PlaySound(SFXManager.SoundType.SUIT_EQUIP);
         Destroy(gameObject);

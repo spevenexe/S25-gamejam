@@ -10,42 +10,39 @@ public class PlayerInteract : PlayerSystem
     [SerializeField] private float _maxFollowDistance = 5f;
     [SerializeField] private float _playerRadius = 5f;
     [SerializeField] private float _interactDistance=5;
-    public Interactable Target {get; private set;}
-    public HeavyItem HauledItem {get; private set;}
-    public EquippableItem EquippedItem {get; private set;}
     [SerializeField] private EquipUI EquipSlot;
 
-    // currently initialized by Player.cs;
-    private PlayerCamera _pCam;
+    [SerializeField] private PlayerCamera _pCam;
     [SerializeField] private Transform _hauledItemSlotTransform;
 
     void OnEnable()
     {
         player.InteractInput.performed += Use;
         player.DropInput.performed += Drop;
+        player.EquipEvent += Equip;
+        player.HaulEvent += Haul;
+        player.DropHeavyEvent += DropHauledItem;
     }
 
     void OnDisable()
     {
         player.InteractInput.performed -= Use;
         player.DropInput.performed -= Drop;
-    }
-
-    void Start()
-    {
-        _pCam = GetComponent<PInput>()._playerCamera;
+        player.EquipEvent -= Equip;
+        player.HaulEvent -= Haul;
+        player.DropHeavyEvent -= DropHauledItem;
     }
 
     void Update()
     {
-        Target?.highlight(_defaultOutline);
+        player.Target?.highlight(_defaultOutline);
         // if we aren't carrying anything heavy, look for something to interact with
-        if(HauledItem == null){
+        if(player.HauledItem == null){
             Transform cameraTransform = _pCam.transform;
             RaycastHit[] hits = Physics.RaycastAll(cameraTransform.position,cameraTransform.forward,_interactDistance,LayerMask.GetMask("Interactable"));
             
             if(hits.Length == 0) {
-                Target = null;
+                player.Target = null;
             }
             else
             {
@@ -57,24 +54,24 @@ public class PlayerInteract : PlayerSystem
                         minDistance = h.distance;
                     }
                 }
-                Target = minHit.transform.GetComponent<Interactable>();
+                player.Target = minHit.transform.GetComponent<Interactable>();
             }
             // if we have an equipped item, don't show the prompt for another equippable item
-            if (Target != null && Target.GetType() == typeof(EquippableItem) && EquippedItem != null)
+            if (player.Target != null && player.Target.GetType() == typeof(EquippableItem) && player.EquippedItem != null)
                 EquipSlot.ClearToolTip();
             else
             {
-                EquipSlot.showToolTip(Target,EquippedItem);
-                Target?.highlight(_highlightOutline);
+                EquipSlot.showToolTip(player.Target,player.EquippedItem);
+                player.Target?.highlight(_highlightOutline);
             }
         }
         // we are carrying something heavy, interacting will drop it
         else
         {
-            Target = HauledItem;
+            player.Target = player.HauledItem;
     
-            HauledItem.rb.linearVelocity = Vector3.zero;
-            Vector3 start = HauledItem.transform.position;
+            player.HauledItem.rb.linearVelocity = Vector3.zero;
+            Vector3 start = player.HauledItem.transform.position;
             Vector3 end = _hauledItemSlotTransform.position;
             start = Vector3.ClampMagnitude(start-end,_maxFollowDistance) + end;
             Vector3 newPos = Vector3.Lerp(start,end,_lerpStrength);
@@ -83,26 +80,26 @@ public class PlayerInteract : PlayerSystem
             if (dist < _playerRadius)
                 newPos+= (newPos-playerPos).normalized*(_playerRadius-dist);
 
-            // if we want to SLerp instead of lerp
+            // if we want to SLerp instead of lerp (dont slerp)
             // Vector3 pivot = (start + end) * 0.5f - transform.position;
             // start-=pivot;
             // end-=pivot;
             // Vector3 newPos = Vector3.Slerp(start,end,_lerpStrength) + pivot;
-            HauledItem.transform.position = newPos;
+            player.HauledItem.transform.position = newPos;
             EquipSlot.ClearToolTip();
         }
     }
 
     private void Use(InputAction.CallbackContext context)
     {
-        if(Target == null) SFXManager.PlaySound(SFXManager.SoundType.INTERACT_FAIL,0.3f);
-        else Target?.Interact(null); // TODO: change null to PData
+        if(player.Target == null) SFXManager.PlaySound(SFXManager.SoundType.INTERACT_FAIL,0.3f);
+        else player.Target?.Interact(player);
     }
 
     public void Drop(InputAction.CallbackContext context)
     {
-        if (HauledItem != null) DropHauledItem();
-        else if (EquippedItem != null) Unequip();
+        if (player.HauledItem != null) DropHauledItem();
+        else if (player.EquippedItem != null) Unequip();
     }
 
     internal void Haul(HeavyItem item)
@@ -113,15 +110,15 @@ public class PlayerInteract : PlayerSystem
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.rotation = Quaternion.identity;
-        HauledItem = item;
-        HauledItem.CanMakeNoise = true;
+        player.HauledItem = item;
+        player.HauledItem.CanMakeNoise = true;
     }
 
     public void DropHauledItem()
     {
-        Rigidbody rb = HauledItem.rb;
-        HauledItem.startSoundFallOff();
-        HauledItem = null;
+        Rigidbody rb = player.HauledItem.rb;
+        player.HauledItem.startSoundFallOff();
+        player.HauledItem = null;
         rb.useGravity = true;
         rb.excludeLayers = LayerMask.GetMask("Nothing"); 
         rb.linearVelocity = Vector3.zero;
@@ -141,21 +138,21 @@ public class PlayerInteract : PlayerSystem
         item.gameObject.layer = LayerMask.NameToLayer("UI");
         item.CanMakeNoise = true;
 
-        EquippedItem = item;
-        // EquippedItem.transform.SetParent(EquipSlot.transform,true);
-        // StartCoroutine(EquipSlot.LerpItem(EquippedItem));
-        StartCoroutine(EquipSlot.LerpItemToPocket(EquippedItem));
-        EquipSlot.BottomRightText.text = EquippedItem.DropTooltip();
+        player.EquippedItem = item;
+        // player.EquippedItem.transform.SetParent(EquipSlot.transform,true);
+        // StartCoroutine(EquipSlot.LerpItem(player.EquippedItem));
+        StartCoroutine(EquipSlot.LerpItemToPocket(player.EquippedItem));
+        EquipSlot.BottomRightText.text = player.EquippedItem.DropTooltip();
     }
 
     internal void Unequip()
     {
-        Rigidbody rb = EquippedItem.rb;
+        Rigidbody rb = player.EquippedItem.rb;
 
-        EquippedItem.gameObject.layer = LayerMask.NameToLayer("Interactable");
-        StartCoroutine(EquipSlot.LerpItemToFloor(EquippedItem,_hauledItemSlotTransform));
-        EquippedItem.startSoundFallOff();
-        EquippedItem = null;
+        player.EquippedItem.gameObject.layer = LayerMask.NameToLayer("Interactable");
+        StartCoroutine(EquipSlot.LerpItemToFloor(player.EquippedItem,_hauledItemSlotTransform));
+        player.EquippedItem.startSoundFallOff();
+        player.EquippedItem = null;
         EquipSlot.BottomRightText.text = "";
     }
 }
