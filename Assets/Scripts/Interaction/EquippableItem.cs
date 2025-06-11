@@ -5,7 +5,7 @@ public class EquippableItem : Item
 {
     [SerializeField] public Vector3 targetRotation;
 
-    public override void Interact(Player player)
+    public override void Interact(PInput player)
     {
         // use the item
         if(player.PlayerInteract.EquippedItem == this)
@@ -25,7 +25,7 @@ public class EquippableItem : Item
     }
 
     // return true if there is a succesful use case
-    internal virtual bool UseOn(Interactable interactable, Player player)
+    internal virtual bool UseOn(Interactable interactable, PInput player)
     {
         return false;
     }

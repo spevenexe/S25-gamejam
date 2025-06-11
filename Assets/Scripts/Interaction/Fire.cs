@@ -2,7 +2,7 @@
 public class Fire : Interactable
 {
     //public float fireDamage = 10f; // damage per second
-    public override void Interact(Player player)
+    public override void Interact(PInput player)
     {
         // use the item
         if(player.PlayerInteract.EquippedItem != null)

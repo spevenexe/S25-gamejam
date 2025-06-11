@@ -13,7 +13,7 @@ public abstract class Interactable : MonoBehaviour
     protected virtual void OnEnable(){}
     protected virtual void OnDisable(){}
 
-    public abstract void Interact(Player player);
+    public abstract void Interact(PInput player);
     protected virtual void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("Interactable");

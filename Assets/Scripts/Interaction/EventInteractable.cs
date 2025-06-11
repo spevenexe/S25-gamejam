@@ -8,7 +8,7 @@ public abstract class EventInteractable : Interactable
     public InteractbleWithItem.ItemType CorrectItem {get => CorrectItem;}
     public event Action InteractionTriggers;
 
-    public override void Interact(Player player)
+    public override void Interact(PInput player)
     {
         if (_canInteract) InteractionTriggers.Invoke();
     }

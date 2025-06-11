@@ -116,7 +116,7 @@ public abstract class BaseModule : MonoBehaviour
         foreach(HullBreach b in breaches)
             Destroy(b.gameObject);
 
-        Player player = FindAnyObjectByType<Player>();
+        PInput player = FindAnyObjectByType<PInput>();
 
         // Visually Break Module for some flair
         IsBroken = true;

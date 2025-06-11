@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PInput : PlayerSystem
 {
     private PlayerMovement _playerMovement;
     public PlayerInteract PlayerInteract {get; private set;}
@@ -15,11 +15,14 @@ public class Player : MonoBehaviour
         _lookInput = _playerInput.actions.FindAction("Look");
         _interactInput = _playerInput.actions.FindAction("Interact");
         _dropInput = _playerInput.actions.FindAction("Drop");
-        _interactInput.performed+=Use;
-        _dropInput.performed+=Drop;
+        _interactInput.performed += Use;
+        _dropInput.performed += Drop;
+
+        player.InteractInput.performed += Use;
+        player.DropInput.performed += Drop;
     }
 
-    private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop();
+    private void Drop(InputAction.CallbackContext context) => PlayerInteract.Drop(context);
 
     private void Use(InputAction.CallbackContext context)
     {
@@ -31,10 +34,14 @@ public class Player : MonoBehaviour
     {
         _interactInput.performed-=Use;
         _dropInput.performed-=Drop;
+
+        player.InteractInput.performed -= Use;
+        player.DropInput.performed -= Drop;
     }
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _playerMovement = GetComponent<PlayerMovement>();
         PlayerInteract = GetComponent<PlayerInteract>();
     }

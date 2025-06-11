@@ -1,6 +1,6 @@
 public class HeavyItem : Item
 {
-    public override void Interact(Player player)
+    public override void Interact(PInput player)
     {
         EquippableItem heldItem = player.PlayerInteract.EquippedItem; // this may be useful?
         // drop the heavy item we are holding

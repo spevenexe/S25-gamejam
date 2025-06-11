@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerInteract : MonoBehaviour
+public class PlayerInteract : PlayerSystem
 {
     [SerializeField] private Color _highlightOutline = Color.yellow;
     [SerializeField] private Color _defaultOutline = Color.black;
@@ -17,9 +18,22 @@ public class PlayerInteract : MonoBehaviour
     // currently initialized by Player.cs;
     private PlayerCamera _pCam;
     [SerializeField] private Transform _hauledItemSlotTransform;
+
+    void OnEnable()
+    {
+        player.InteractInput.performed += Use;
+        player.DropInput.performed += Drop;
+    }
+
+    void OnDisable()
+    {
+        player.InteractInput.performed -= Use;
+        player.DropInput.performed -= Drop;
+    }
+
     void Start()
     {
-        _pCam = GetComponent<Player>()._playerCamera;
+        _pCam = GetComponent<PInput>()._playerCamera;
     }
 
     void Update()
@@ -79,10 +93,16 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    public void Drop()
+    private void Use(InputAction.CallbackContext context)
     {
-        if(HauledItem != null) DropHauledItem();
-        else if(EquippedItem != null) Unequip();
+        if(Target == null) SFXManager.PlaySound(SFXManager.SoundType.INTERACT_FAIL,0.3f);
+        else Target?.Interact(null); // TODO: change null to PData
+    }
+
+    public void Drop(InputAction.CallbackContext context)
+    {
+        if (HauledItem != null) DropHauledItem();
+        else if (EquippedItem != null) Unequip();
     }
 
     internal void Haul(HeavyItem item)

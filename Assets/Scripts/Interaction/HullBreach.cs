@@ -55,50 +55,6 @@ public class HullBreach : InteractbleWithItem
             }
             _outlines.Add(_outline);
         }
-
-        /*
-        // for meshes on object children
-        foreach(GameObject part in _parts)
-        {
-            SkinnedMeshRenderer skinnedMR;
-            MeshRenderer meshRenderer = null;
-            Mesh mesh = null;
-            MeshFilter meshFilter;
-            List<Material> materials = new();
-            if(part.TryGetComponent(out skinnedMR))
-            {
-                mesh = skinnedMR.sharedMesh;
-                materials = new(skinnedMR.materials);
-            }else if(part.TryGetComponent(out meshFilter))
-            {
-                mesh = meshFilter.mesh;
-                meshRenderer = part.GetComponent<MeshRenderer>();
-                materials = new(meshRenderer.materials);
-            }else
-            {
-                throw new Exception("No mesh renderer found");
-            }
-            mesh.subMeshCount+=1;
-            mesh.SetTriangles(mesh.triangles,mesh.subMeshCount-1);
-            Material outline = null;
-            foreach (Material m in materials)
-            {
-                if(m.name.IndexOf("InkingMaterial") >= 0) outline = m;
-            }
-            if (outline == null)
-            {
-                Material mat = Resources.Load<Material>("Materials/InkingMaterial");
-                if(mat == null) Debug.LogWarning("material not found");
-                else
-                {
-                    outline = new Material(mat);
-                    materials.Add(outline);
-                    skinnedMR?.SetMaterials(materials);
-                    meshRenderer?.SetMaterials(materials);
-                }
-            }
-            _outlines.Add(outline);
-        }*/
     }
 
     protected override void Start()
@@ -121,7 +77,7 @@ public class HullBreach : InteractbleWithItem
         }
     }
 
-    public override void Interact(Player player)
+    public override void Interact(PInput player)
     {
         // use the item
 
