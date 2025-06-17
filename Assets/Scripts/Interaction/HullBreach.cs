@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 // TODO: This is Hella slow. Fix Awake()
-public class HullBreach : InteractbleWithItem
+public class HullBreach : InteractableWithItem
 {
     private List<Material> _outlines = new List<Material>();
     [SerializeField] private float _crashVolume = 1f;
@@ -34,7 +34,7 @@ public class HullBreach : InteractbleWithItem
             mesh.subMeshCount+=1;
             mesh.SetTriangles(mesh.triangles,mesh.subMeshCount-1);
             MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-            List<Material> materials = new(meshRenderer.materials);
+            List<Material> materials = new(meshRenderer.materials); // causes major memory allocation. Use the render pipeline with layers instead.
             // try and find the outline material
             Material outline = null;
             foreach (Material m in materials)

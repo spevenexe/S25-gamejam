@@ -1,9 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// A type of item that can be held in the player's hand (also called pocket)
+/// </summary>
 public class EquippableItem : Item
 {
-    [SerializeField] public Vector3 targetRotation;
+    /// <summary>
+    /// When the imported model is not normalized, this helps control how the item is oriented when dropped.
+    /// </summary>
+    public Vector3 targetRotation;
 
     public override void Interact(PData player)
     {
@@ -24,13 +30,20 @@ public class EquippableItem : Item
         return $"Equip {ItemName}";
     }
 
-    // return true if there is a succesful use case
+    /// <summary>
+    /// Attemps to use the equipped item on the given <c>Interactable</c>.
+    /// </summary>
+    /// <param name="interactable">The interactable to use the item on.</param>
+    /// <param name="player">the interacting player's data</param>
+    /// <returns><c>true</c> if there is a succesful use case, <c> false</c> otherwise.</returns>
     internal virtual bool UseOn(Interactable interactable, PData player)
     {
         return false;
     }
 
-    // for running animations on the item
+    /// <summary>
+    /// For running animations on the item.
+    /// </summary>
     public virtual IEnumerator Animate()
     {
         yield break;

@@ -4,8 +4,8 @@ using UnityEngine;
 public abstract class EventInteractable : Interactable
 {
     
-    [SerializeField] protected InteractbleWithItem.ItemType _correctItem = InteractbleWithItem.ItemType.None;
-    public InteractbleWithItem.ItemType CorrectItem {get => CorrectItem;}
+    [SerializeField] protected InteractableWithItem.ItemType _correctItem = InteractableWithItem.ItemType.None;
+    public InteractableWithItem.ItemType CorrectItem {get => CorrectItem;}
     public event Action InteractionTriggers;
 
     public override void Interact(PData player)

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class InteractbleWithItem : EventInteractable
+public abstract class InteractableWithItem : EventInteractable
 {
     public enum ItemType{
         None,

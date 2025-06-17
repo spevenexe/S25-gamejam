@@ -16,6 +16,10 @@ public abstract class Interactable : MonoBehaviour
     protected virtual void OnEnable() { }
     protected virtual void OnDisable() { }
 
+    /// <summary>
+    /// Attempt an interact with this object.
+    /// </summary>
+    /// <param name="player">The player data of the interacter.</param>
     public abstract void Interact(PData player);
     protected virtual void Awake()
     {
