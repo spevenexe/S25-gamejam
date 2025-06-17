@@ -44,9 +44,9 @@ public class Suit : EventInteractable
         return $"Put on Suit";
     }
 
-    public override void highlight(Color color)
+    public override void Highlight(Color color)
     {
-        base.highlight(color);
+        base.Highlight(color);
         helmetOutline?.SetColor("_Outline_Color",color);
     }
 }

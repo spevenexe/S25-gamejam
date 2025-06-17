@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Script that handles all input reception. It stores the information in a corresponding PData object. 
+/// </summary>
 public class PInput : PlayerSystem
 {
     private PlayerInput _playerInput;
@@ -8,17 +11,12 @@ public class PInput : PlayerSystem
     protected override void Awake()
     {
         base.Awake();
-        _playerInput = GetComponent<PlayerInput>(); // this creates unnecessary dependency with Interactable. Change this
-    }
-
-    void Start()
-    {
-        Interactable.setPI(_playerInput);
+        _playerInput = GetComponent<PlayerInput>();
     }
 
     void Update()
     {
-        player.LookDirection = player.LookInput.ReadValue<Vector2>();
-        player.MoveDirection = player.MovementInput.ReadValue<Vector2>();
+        _player.LookDirection = _player.LookInput.ReadValue<Vector2>();
+        _player.MoveDirection = _player.MovementInput.ReadValue<Vector2>();
     }
 }

@@ -2,6 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Data class which holds anything that multiple scripts share.
+/// </summary>
 public class PData : MonoBehaviour
 {
     [Header("Input")]
@@ -9,10 +12,12 @@ public class PData : MonoBehaviour
     public InputAction LookInput {get; private set;}
     public InputAction InteractInput {get; private set;}
     public InputAction DropInput {get; private set; }
+    [SerializeField] private float _lookSensitivity;
+    public float LookSensitivity { get => _lookSensitivity; }
 
     [Header("Interaction")]
-    public Interactable Target {get; set; }
-    public HeavyItem HauledItem {get; set;}
+    public Interactable Target { get; set; }
+    public HeavyItem HauledItem { get; set; }
     public EquippableItem EquippedItem {get; set;}
     public Action<EquippableItem> EquipEvent;
     public Action<HeavyItem> HaulEvent; // this might be kinda hacky. Change later?
@@ -20,6 +25,8 @@ public class PData : MonoBehaviour
 
     [Header("Camera")]
     public Vector2 LookDirection {get; set;}
+    [SerializeField] private Transform _playerOrientation;
+    public Transform PlayerOrientation { get => _playerOrientation; }
 
     [Header("Movement")]
     public Vector2 MoveDirection {get; set;}

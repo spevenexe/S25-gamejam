@@ -95,7 +95,7 @@ public class HullBreach : InteractbleWithItem
         return $"Repair Breach";
     }
 
-    public override void highlight(Color color)
+    public override void Highlight(Color color)
     {
         foreach(Material outline in _outlines)
         {

@@ -12,26 +12,39 @@ public class Utils
         float f2 = r * t * t * 3;
         float f3 = t * t * t;
         return new Vector3(
-            f0*start.x + f1*p1.x + f2*p2.x + f3*end.x,
-            f0*start.y + f1*p1.y + f2*p2.y + f3*end.y,
-            f0*start.z + f1*p1.z + f2*p2.z + f3*end.z
+            f0 * start.x + f1 * p1.x + f2 * p2.x + f3 * end.x,
+            f0 * start.y + f1 * p1.y + f2 * p2.y + f3 * end.y,
+            f0 * start.z + f1 * p1.z + f2 * p2.z + f3 * end.z
         );
     }
 
-    public static string getKeys(PlayerInput PInput,string action)
+    public static string getKeys(PlayerInput PInput, string action)
     {
-        string message = ""; 
+        string message = "";
         InputAction InteractAction = PInput.actions.FindAction(action);
         ReadOnlyArray<InputBinding> allKeys = InteractAction.bindings;
         InputBinding mask = InputBinding.MaskByGroup(PInput.currentControlScheme);
         int i;
-        for(i = 0; i < allKeys.Count-1; i++)
+        for (i = 0; i < allKeys.Count - 1; i++)
         {
-            if(mask.Matches(allKeys[i]))
-                message+="["+allKeys[i].ToDisplayString()+"]/ ";
+            if (mask.Matches(allKeys[i]))
+                message += "[" + allKeys[i].ToDisplayString() + "]/ ";
         }
-        if(mask.Matches(allKeys[i]))
-            message+="["+allKeys[i].ToDisplayString()+"]";
+        if (mask.Matches(allKeys[i]))
+            message += "[" + allKeys[i].ToDisplayString() + "]";
         return message;
+    }
+
+    private static GameObject _playerObject;
+    /// <summary>
+    /// Finds the playerObject and returns it. Only logs warning on failure.
+    /// </summary>
+    /// <returns>the player Game Object.</returns>
+    public static PData getPlayer()
+    {
+        if (_playerObject == null) { _playerObject = GameObject.FindGameObjectWithTag("Player"); }
+        if (_playerObject == null) Debug.LogWarning($"No player found.");
+
+        return _playerObject.GetComponent<PData>();
     }
 }

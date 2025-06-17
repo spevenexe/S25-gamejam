@@ -1,0 +1,3 @@
+[submodule "Packages/ProjectAuditor"]
+	path = Packages/ProjectAuditor
+	url = https://github.com/Unity-Technologies/ProjectAuditor.git

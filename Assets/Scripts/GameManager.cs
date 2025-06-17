@@ -1,15 +1,20 @@
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
+/// <summary>
+/// A simple game manager that handles static references and other events. 
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
-    public float yBottom_box;
+    [SerializeField] private PlayerInput _playerInput;
 
     void Awake()
     {
         if (Instance == null) Instance = this;
-        else Destroy(this); 
+        else Destroy(this);
+
+        if (_playerInput == null) Utils.getPlayer()?.GetComponent<PlayerInput>();
+        Interactable.SetPI(_playerInput);
     }
 }

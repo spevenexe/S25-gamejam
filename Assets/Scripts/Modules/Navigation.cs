@@ -77,7 +77,7 @@ public class Navigation : MonoBehaviour
 
     public void Highlight()
     {
-        _monitor.highlight(Color.yellow);
+        _monitor.Highlight(Color.yellow);
     }
 
     internal void Init()

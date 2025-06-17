@@ -107,7 +107,7 @@ public class Lever : EventInteractable{
         Switch(LeverState.off);
     }
 
-    public override void highlight(Color color)
+    public override void Highlight(Color color)
     {
         foreach(Material outline in _outlines)
         {

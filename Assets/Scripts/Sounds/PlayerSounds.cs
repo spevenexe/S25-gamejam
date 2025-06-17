@@ -34,7 +34,7 @@ public class PlayerSounds : PlayerSystem
         if(_playerMovement.IsMoving()&& _timeToNextFootstep <=0)
         {
             FootstepEvent.Invoke();
-            _timeToNextFootstep = 1 / (_footstep_frequency * (player.CurrentSpeed/3f));
+            _timeToNextFootstep = 1 / (_footstep_frequency * (_player.CurrentSpeed/3f));
         }
 
         _timeToNextFootstep-=Time.deltaTime;
