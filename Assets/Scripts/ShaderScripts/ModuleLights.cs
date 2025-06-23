@@ -1,6 +1,9 @@
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Manages array of lights in a module. Houses simple color setting functions.
+/// </summary>
 [RequireComponent(typeof(MeshRenderer))]
 public class ModuleLights : MonoBehaviour
 {

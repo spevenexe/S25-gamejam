@@ -2,6 +2,9 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// The bulk of gameplay. Manages timers and adjusting progress.
+/// </summary>
 public class MidGame : MonoBehaviour
 {
 
@@ -12,11 +15,11 @@ public class MidGame : MonoBehaviour
     [SerializeField] private Window _window;
 
     [Tooltip("This should NOT contain the engine module")]
-    [SerializeField] private BaseModule [] _modules;
+    [SerializeField] private BaseModule[] _modules;
 
     // timer variables
     [SerializeField] private float _totalMidGameTime;
-    [SerializeField] private float _breachTimePenalty=1;
+    // [SerializeField] private float _breachTimePenalty=1;
     private float _timer = 0;
     private float _timerProgress = 0;
 
@@ -37,7 +40,7 @@ public class MidGame : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(_modules == null || _modules.Length == 0) throw new Exception("No modules found");
+        if (_modules == null || _modules.Length == 0) throw new Exception("No modules found");
         if (navigationModule == null) navigationModule = FindAnyObjectByType<Navigation>();
         if (hullBreachModule == null) hullBreachModule = FindAnyObjectByType<HullBreachManager>();
         if (engineModule == null) engineModule = FindAnyObjectByType<EngineModule>();
@@ -62,7 +65,7 @@ public class MidGame : MonoBehaviour
         engineModule?.InitTimer();
 
 
-        foreach(BaseModule bm in _modules)
+        foreach (BaseModule bm in _modules)
         {
             bm?.SetTimerRanges(_timerProgress);
             bm?.InitTimer();
@@ -78,10 +81,10 @@ public class MidGame : MonoBehaviour
     void Update()
     {
         // increase timer by deltaTime, only if the engine is working
-        if(!engineModule.IsBroken)
+        if (!engineModule.IsBroken)
         {
             float newTime = _timer + Time.deltaTime - navigationModule.OffCoursePenalty;
-            _timer = Mathf.Max(newTime,_timer);
+            _timer = Mathf.Max(newTime, _timer);
         }
 
         // update timerProgress
@@ -92,8 +95,8 @@ public class MidGame : MonoBehaviour
         // decrement timers
         navigationModule?.UpdateNavStatus();
         engineModule?.DecrementTimer(Time.deltaTime);
-        hullBreachModule?.adjustBreachTimer(Time.deltaTime);
-        foreach(BaseModule bm in _modules)
+        hullBreachModule?.AdjustBreachTimer(Time.deltaTime);
+        foreach (BaseModule bm in _modules)
             bm?.DecrementTimer(Time.deltaTime);
 
 
@@ -101,7 +104,7 @@ public class MidGame : MonoBehaviour
         navigationModule?.SetNavMultipler(_timerProgress);
         hullBreachModule?.SetTimerRanges(_timerProgress);
         engineModule?.SetTimerRanges(_timerProgress);
-        foreach(BaseModule bm in _modules)
+        foreach (BaseModule bm in _modules)
             bm?.SetTimerRanges(_timerProgress);
 
         // end the game when timer up
@@ -131,9 +134,9 @@ public class MidGame : MonoBehaviour
 
     private IEnumerator StartEndGameHelper()
     {
-        EndGame endGame = Instantiate(Resources.Load<EndGame>("EndGame"),null);
+        EndGame endGame = Instantiate(Resources.Load<EndGame>("EndGame"), null);
         // make sure to pass the ejection order to the endgame
-        while(!endGame.didAwake) yield return null;
+        while (!endGame.didAwake) yield return null;
         endGame.Modules.Add(engineModule);
         endGame.Modules.AddRange(_modules);
 

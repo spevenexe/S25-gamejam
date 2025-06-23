@@ -1,51 +1,55 @@
-using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // TODO: This is Hella slow. Fix Awake()
-public class HullBreach : InteractableWithItem
+/// <summary>
+/// A hull breach. Grows into an infested breach over time.
+/// </summary>
+public class HullBreach : InteractableNeedsItem
 {
     private List<Material> _outlines = new List<Material>();
     [SerializeField] private float _crashVolume = 1f;
-    
+
     [SerializeField] private float _growMinTime = 10f;
     [SerializeField] private float _growMaxTime = 15f;
-    private float _timer = 0 ;
-    public bool Infested {get;private set;} = false;
+    private float _timer = 0;
+    public bool Infested { get; private set; } = false;
     private static HullBreach _infestedHullBreach;
 
     public static bool BreachDestroyedOnce = false; // for tutorial
 
     protected override void Awake()
     {
-        if(_infestedHullBreach == null)
+        // TODO don't load it, that's inefficient. Use an animation + statemachine to convert it
+        // load the preset for infested breaches
+        if (_infestedHullBreach == null)
         {
             _infestedHullBreach = Resources.Load<HullBreach>("Interactables/Infested Hull Breach");
         }
 
         gameObject.layer = LayerMask.NameToLayer("Interactable");
-        
+
+        // Character inking
         // for meshes located on the object itself
         MeshFilter mf;
-        if(TryGetComponent(out mf))
+        if (TryGetComponent(out mf))
         {
             Mesh mesh = GetComponent<MeshFilter>().mesh;
-            mesh.subMeshCount+=1;
-            mesh.SetTriangles(mesh.triangles,mesh.subMeshCount-1);
+            mesh.subMeshCount += 1;
+            mesh.SetTriangles(mesh.triangles, mesh.subMeshCount - 1);
             MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
-            List<Material> materials = new(meshRenderer.materials); // causes major memory allocation. Use the render pipeline with layers instead.
+            List<Material> materials = new(meshRenderer.materials); // TODO: causes major memory allocation. Use the render pipeline with layers instead.
             // try and find the outline material
             Material outline = null;
             foreach (Material m in materials)
             {
-                if(m.name.IndexOf("InkingMaterial") >= 0) outline = m;
+                if (m.name.IndexOf("InkingMaterial") >= 0) outline = m;
             }
             // if we can't find it, load it
             if (outline == null)
             {
                 Material mat = Resources.Load<Material>("Materials/InkingMaterial");
-                if(mat == null) Debug.LogWarning("material not found");
+                if (mat == null) Debug.LogWarning("material not found");
                 else
                 {
                     outline = new Material(mat);
@@ -60,18 +64,18 @@ public class HullBreach : InteractableWithItem
     protected override void Start()
     {
         _canInteract = false;
-        _timer = UnityEngine.Random.Range(_growMinTime,_growMaxTime);
-        SFXManager.PlaySound(SFXManager.SoundType.CRASH,_crashVolume);
+        _timer = Random.Range(_growMinTime, _growMaxTime);
+        SFXManager.PlaySound(SFXManager.SoundType.CRASH, _crashVolume);
     }
 
     void Update()
     {
-        if(Infested) return;
-        _timer-=Time.deltaTime;
-        if(_timer <= 0)
+        if (Infested) return;
+        _timer -= Time.deltaTime;
+        if (_timer <= 0)
         {
-            HullBreach hb = Instantiate(_infestedHullBreach,transform.position,transform.rotation);
-            hb.transform.localScale*=1.5f;
+            HullBreach hb = Instantiate(_infestedHullBreach, transform.position, transform.rotation);
+            hb.transform.localScale *= 1.5f;
             hb.Infested = true;
             Destroy(gameObject);
         }
@@ -79,12 +83,10 @@ public class HullBreach : InteractableWithItem
 
     public override void Interact(PData player)
     {
-        // use the item
-
         EquippableItem item = player.EquippedItem;
-        if(item != null && item.it == _correctItem)
+        if (item != null && item.it == _correctItem)
         {
-            SFXManager.PlaySound(SFXManager.SoundType.HAMMER_BONK,item.ClangVolume);
+            SFXManager.PlaySound(SFXManager.SoundType.HAMMER_BONK, item.ClangVolume);
             BreachDestroyedOnce = true;
             Destroy(gameObject); // destroy the breach after using the item
         }
@@ -97,10 +99,10 @@ public class HullBreach : InteractableWithItem
 
     public override void Highlight(Color color)
     {
-        foreach(Material outline in _outlines)
+        foreach (Material outline in _outlines)
         {
-            if (_canInteract) outline?.SetColor("_Outline_Color",color);
-            else outline?.SetColor("_Outline_Color",Color.black);
+            if (_canInteract) outline?.SetColor("_Outline_Color", color);
+            else outline?.SetColor("_Outline_Color", Color.black);
         }
     }
 }

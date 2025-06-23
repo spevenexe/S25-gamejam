@@ -1,3 +1,4 @@
+using Items;
 /// <summary>
 /// A type of item that cannot be held in a pocket, it must be carried around in front of the player, and prevents interaction with other objects while held.
 /// </summary>

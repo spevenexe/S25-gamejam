@@ -2,14 +2,18 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// A screen that can be clicked on.
+/// </summary>
 public class Monitor : EventInteractable
 {
     [SerializeField] private float _buttonCooldown = .5f;
+    [SerializeField] private string toolTipMessage = "Realign Ship Navigation";
 
     protected override void OnEnable()
     {
         base.OnEnable();
-        InteractionTriggers+=PlaySound;
+        InteractionTriggers += PlaySound;
     }
 
     protected override void OnDisable()
@@ -26,6 +30,9 @@ public class Monitor : EventInteractable
         StartCoroutine(ButtonCooldown());
     }
 
+    /// <summary>
+    /// buffers a few seconds to prevent the player from spamming the monitor
+    /// </summary>
     private IEnumerator ButtonCooldown()
     {
         _canInteract = false;
@@ -35,6 +42,6 @@ public class Monitor : EventInteractable
 
     protected override string UniqueToolTip(EquippableItem equippedItem)
     {
-        return "Realign Ship Navigation";
+        return toolTipMessage;
     } 
 }

@@ -2,6 +2,10 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
+// TODO use actual animations instead of rotating it
+/// <summary>
+/// Simple Door module
+/// </summary>
 public class Door : MonoBehaviour
 {
     [SerializeField] public BoxCollider boxCollider;
@@ -15,11 +19,11 @@ public class Door : MonoBehaviour
         Vector3 doorDestRotation = doorInitRotation;
         doorDestRotation.z = 0;
         float closeTime = 3f;
-        for(float timer = 0; timer < closeTime; timer+=Time.deltaTime)
+        for (float timer = 0; timer < closeTime; timer += Time.deltaTime)
         {
-            timer+=Time.deltaTime;
-            float t = timer/(closeTime-timer);
-            transform.localEulerAngles = Vector3.Slerp(doorInitRotation,doorDestRotation,t);
+            timer += Time.deltaTime;
+            float t = timer / (closeTime - timer);
+            transform.localEulerAngles = Vector3.Slerp(doorInitRotation, doorDestRotation, t);
             yield return null;
         }
         transform.localEulerAngles = doorDestRotation;

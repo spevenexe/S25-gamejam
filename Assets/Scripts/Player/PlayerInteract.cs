@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,13 +19,30 @@ public class PlayerInteract : PlayerSystem
     [SerializeField] private PlayerCamera _pCam;
     [SerializeField] private Transform _hauledItemSlotTransform;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        // we have to initialize the inputs here, because Awake() and OnEnable() are not deterministic and can cause race conditions
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        _player.MovementInput = playerInput.actions.FindAction("Move");
+        _player.LookInput = playerInput.actions.FindAction("Look");
+        _player.InteractInput = playerInput.actions.FindAction("Interact");
+        _player.DropInput = playerInput.actions.FindAction("Drop");
+    }
+
     void OnEnable()
     {
-        _player.InteractInput.performed += Use;
-        _player.DropInput.performed += Drop;
-        _player.EquipEvent += Equip;
-        _player.HaulEvent += Haul;
-        _player.DropHeavyEvent += DropHauledItem;
+        try
+        {
+            _player.InteractInput.performed += Use;
+            _player.DropInput.performed += Drop;
+            _player.EquipEvent += Equip;
+            _player.HaulEvent += Haul;
+            _player.DropHeavyEvent += DropHauledItem;
+        }
+        catch (NullReferenceException){
+            Debug.LogWarning("Player Inputs have not been initialized yet. Skipping subscription...");
+        }
     }
 
     void OnDisable()
@@ -144,7 +162,7 @@ public class PlayerInteract : PlayerSystem
     }
 
     /// <summary>
-    /// Equips the targeted item.
+    /// Equips an item to the player.
     /// </summary>
     /// <param name="item">The item to equip. Cannot be null before calling.</param>
     internal void Equip(EquippableItem item)

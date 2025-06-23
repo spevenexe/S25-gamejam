@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations;
 
 /// <summary>
 /// Class that handles tooltip generation and managing the equipped item.

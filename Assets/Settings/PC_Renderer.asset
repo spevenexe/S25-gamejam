@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Active: 1
   material: {fileID: -876546973899608171, guid: c19f9ab047d45ce4da62db46dd0b4e5c, type: 3}
   injectionPoint: 600
-  screenHeight: 144
+  screenHeight: 200
 --- !u!114 &3132591290157799590
 MonoBehaviour:
   m_ObjectHideFlags: 0

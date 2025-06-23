@@ -23,8 +23,10 @@ public abstract class Interactable : MonoBehaviour
     public abstract void Interact(PData player);
     protected virtual void Awake()
     {
+
         gameObject.layer = LayerMask.NameToLayer("Interactable");
 
+        // TODO: remove this and subclasses. Replace with a full-pass shader 
         // this creates an additional mesh out of submeshes so we can fully highlight it
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.subMeshCount += 1;

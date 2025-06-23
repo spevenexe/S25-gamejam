@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Ending sequence. Ship breaks down.
+/// </summary>
 public class EndGame : MonoBehaviour
 {
-    
+
     public List<BaseModule> Modules;
 
     void Awake()
@@ -12,17 +15,17 @@ public class EndGame : MonoBehaviour
         Modules = new();
     }
 
-    void Start() 
+    void Start()
     {
         StartCoroutine(StartEjectionSequenceHelper());
     }
 
     private IEnumerator StartEjectionSequenceHelper()
     {
-        foreach(BaseModule b in Modules)
+        foreach (BaseModule b in Modules)
         {
             AnnouncmentBox.EnqueueMessage($"{b.name} compromised. exit module".ToUpper());
-            b.Eject();
+            b.EjectModule();
             yield return new WaitForSeconds(b.EjectTime);
         }
 

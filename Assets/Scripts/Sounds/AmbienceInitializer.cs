@@ -1,11 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Ambient sound effects. These are only used at the start and play forever. If you want finer control of the sound, use <c>SFXManager.LoopClip()</c> from a difference script.
+/// </summary>
 class AmbienceInitializer : MonoBehaviour
 {
-    // ambient sound effects. These are only used at the start and play forever. If you want finer control of the sound, use LoopClip() from a difference script.
     [SerializeField] private AudioClip [] _initAmbiencesClips;
     private List<AudioSource> _initAmbienceSources = new();
     [SerializeField] private AudioSource sourcePrefab;
@@ -34,7 +35,7 @@ class AmbienceInitializer : MonoBehaviour
         yield return new WaitForSeconds(_creepyintervalMax);
         while(true)
         {
-            float waitTime = UnityEngine.Random.Range(_creepyintervalMin,_creepyintervalMax);
+            float waitTime = Random.Range(_creepyintervalMin,_creepyintervalMax);
             AudioClip audioClip = SFXManager.GetAudioClip(SFXManager.SoundType.CREEPY_NOISE);
             SFXManager.PlayClip(audioClip,_volume);
             yield return new WaitForSeconds(audioClip.length + waitTime);

@@ -4,6 +4,9 @@ using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+/// <summary>
+/// Handles the summoning of hull breaches.
+/// </summary>
 public class HullBreachManager : MonoBehaviour
 {
     [SerializeField] private float _breachStartMaxTime;
@@ -11,7 +14,7 @@ public class HullBreachManager : MonoBehaviour
     private float _breachMaxTime;
     [SerializeField] private float _breachMinTime;
     private float _breachTimer;
-    private float _breachTimerAveragePercentage = 0.5f;
+    private float _breachTimerBias = 0.5f;
 
     private Transform [] _breachSpots;
     private HullBreach [] _breaches;
@@ -37,47 +40,42 @@ public class HullBreachManager : MonoBehaviour
         _breachMaxTime = timerProgress * (_breachEndMaxTime - _breachStartMaxTime) + _breachStartMaxTime;
     }
 
+    /// <summary>
+    /// Set the time interval until the next breach. Uses chaotic smoothing to vary the spawning time.
+    /// </summary>
     private void StartNewBreachTimer()
     {
         // get random percentage
-        float _breachTimerPercentage = Random.Range(0f, 1f);
+        float breachTimerPercentage = Random.Range(0f, 1f);
 
-        // create additional variables
-        float _breachTimerPercentageOfAverageTimer = 0f;
-        float _breachTimerPercentageToAdd = 0f;
-        float _breachNewTimerPercentage = 0f;
+        float dist = breachTimerPercentage - _breachTimerBias;
+        float weight;
 
-        // adjust breachTimerPercentage based on breachTimerAveragePercentage
-        if (_breachTimerPercentage < _breachTimerAveragePercentage)
+        // weight values towards the bias
+        if (dist < 0f)
         {
-            _breachTimerPercentageOfAverageTimer = _breachTimerPercentage / _breachTimerAveragePercentage;
-            _breachTimerPercentageToAdd = _breachTimerPercentageOfAverageTimer * (_breachTimerAveragePercentage - _breachTimerPercentage);
-            _breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
+            weight = breachTimerPercentage / _breachTimerBias;
         }
-        else if (_breachTimerPercentage > _breachTimerAveragePercentage)
+        else if (dist > 0f)
         {
-            _breachTimerPercentageOfAverageTimer = Mathf.Abs((_breachTimerPercentage - _breachTimerAveragePercentage) / (1 - _breachTimerAveragePercentage) - 1);
-            _breachTimerPercentageToAdd = -(_breachTimerPercentageOfAverageTimer * (_breachTimerPercentage - _breachTimerAveragePercentage));
-            _breachNewTimerPercentage = _breachTimerPercentage + _breachTimerPercentageToAdd;
+            // distance ratio
+            weight = 1f - ((breachTimerPercentage - _breachTimerBias) / (1f - _breachTimerBias));
         }
         else
         {
-            _breachNewTimerPercentage = _breachTimerPercentage;
+            weight = 0f;
         }
 
-        // set breachTimer with breachNewTimerPercentage
-        _breachTimer = _breachNewTimerPercentage * (_breachMaxTime - _breachMinTime) + _breachMinTime;
+        // skew the timer towards the bias to decrease randomness
+        float adjustedBreachTimerPercentage = breachTimerPercentage - dist * weight;
 
-        // adjust breachTimerAveragePercentage to new average
-        _breachTimerAveragePercentage = Mathf.Abs(_breachTimerPercentage-1);
+        // set breachTimer
+        _breachTimer = adjustedBreachTimerPercentage * (_breachMaxTime - _breachMinTime) + _breachMinTime;
 
-        // Debug.Log(_breachTimer);
-        // Debug.Log(_breachNewTimerPercentage);
-        // Debug.Log(_breachTimerPercentage);
-        // Debug.Log(_breachTimerAveragePercentage);
+        // adjust the bias to the percentage inverse of the random value. In effect, The bias should oscillate between values in a predictable way.
+        _breachTimerBias = Mathf.Abs(breachTimerPercentage - 1);
     }
 
-    // Keianna TODO
     public void CreateHullBreach()
     {
         List<Transform> openSpots = new List<Transform>();
@@ -100,13 +98,18 @@ public class HullBreachManager : MonoBehaviour
         _breaches[index] = breach;
     }
     
+    /// <summary>
+    /// Create a hull breach at a given transform
+    /// </summary>
+    /// <param name="hullBreachTutorialSpot">The transform to create the hull breach at</param>
     internal void CreateHullBreach(Transform hullBreachTutorialSpot)
     {
-        Instantiate(_breachPrefab, hullBreachTutorialSpot.position,hullBreachTutorialSpot.rotation);
+        Instantiate(_breachPrefab, hullBreachTutorialSpot.position, hullBreachTutorialSpot.rotation);
     }
 
     // you should call this in Update()
-    public void adjustBreachTimer(float deltaTime)
+    /// <param name="deltaTime">the amount by which to adjust the timer </param>
+    public void AdjustBreachTimer(float deltaTime)
     {
         // decrease breachTimer by deltaTime
         _breachTimer -= deltaTime;
@@ -118,11 +121,12 @@ public class HullBreachManager : MonoBehaviour
         }
     }
 
+    // TODO: this _breaches list is kinda hacky. Might need fixing 
     public int BreachCount()
     {
         int ret = 0;
-        foreach(HullBreach b in _breaches)
-            ret+= (b != null) ? 1 : 0;
+        foreach (HullBreach b in _breaches)
+            ret += (b != null) ? 1 : 0;
         return ret;
     }
 
@@ -144,7 +148,7 @@ public class HullBreachManagerEditor : Editor
 
         HullBreachManager hbm = (HullBreachManager) target;
         if(GUILayout.Button("Decrement Timer",GUILayout.Width(120f)))
-            hbm.adjustBreachTimer(100);
+            hbm.AdjustBreachTimer(100);
         
         GUILayout.EndHorizontal();
 

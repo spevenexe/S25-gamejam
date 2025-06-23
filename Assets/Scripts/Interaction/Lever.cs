@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
+/// <summary>
+/// Simple lever. Lever can be up or down, or disabled.
+/// </summary>
 public class Lever : EventInteractable{
     // string [] position = {"Up", "Middle", "Down"};
     public enum LeverState
@@ -23,13 +25,11 @@ public class Lever : EventInteractable{
     {
         base.OnEnable();
         InteractionTriggers+=Switch;
-        InteractionTriggers+= () => SFXManager.PlaySound(SFXManager.SoundType.LEVER);
     }
     protected override void OnDisable()
     {
         base.OnDisable();
         InteractionTriggers-=Switch;
-        InteractionTriggers-= () => SFXManager.PlaySound(SFXManager.SoundType.LEVER);
     }
 
     protected override void Awake()
@@ -71,27 +71,39 @@ public class Lever : EventInteractable{
         Switch(_leverState);
     }
 
+    /// <summary>
+    /// Toggle the lever state between up and down.
+    /// </summary>
     private void Switch()
     {
-        _leverState = (LeverState) (((int)_leverState + 1 )% 2) ;
-        if(_leverState == CorrectState) _leverLight.ResetColorDefault();
+        _leverState = (LeverState)(((int)_leverState + 1) % 2);
+        if (_leverState == CorrectState) _leverLight.ResetColorDefault();
         else _leverLight.SetAlarmColor();
+
+        SFXManager.PlaySound(SFXManager.SoundType.LEVER);
     }
     
+    /// <summary>
+    /// Set the lever's state to the given state.
+    /// </summary>
+    /// <param name="newState">The state to switch to</param>
     private void Switch(LeverState newState)
     {
         _leverState = newState;
-        if(_leverState == CorrectState) 
+        // light up the lever
+        if (_leverState == CorrectState)
         {
             _leverLight.ResetColorDefault();
             _canInteract = true;
         }
-        else if(_leverState == LeverState.off) 
+        // turn of the lever
+        else if (_leverState == LeverState.off)
         {
             _leverLight.TurnOff();
             _canInteract = false;
         }
-        else 
+        // turn on the error light
+        else
         {
             _leverLight.SetAlarmColor();
             _canInteract = true;

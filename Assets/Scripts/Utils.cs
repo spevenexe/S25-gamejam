@@ -47,4 +47,14 @@ public class Utils
 
         return _playerObject.GetComponent<PData>();
     }
+
+    /// <summary>
+    /// Checks whether the given rigidbody is moving
+    /// </summary>
+    public static bool IsMoving(Rigidbody rb)
+    {
+        float v_x = rb.linearVelocity.x;
+        float v_z = rb.linearVelocity.z;
+        return v_x * v_x + v_z * v_z > 0.1 * 0.1;
+    }
 }

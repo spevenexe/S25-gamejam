@@ -1,11 +1,10 @@
 using System;
-using UnityEngine;
 
-public abstract class EventInteractable : Interactable
+/// <summary>
+/// An Interactable that triggers an event. Useful for linking multiple functions to a particular interaction.
+/// </summary>
+public abstract class EventInteractable : Interactable, ITriggerEvent
 {
-    
-    [SerializeField] protected InteractableWithItem.ItemType _correctItem = InteractableWithItem.ItemType.None;
-    public InteractableWithItem.ItemType CorrectItem {get => CorrectItem;}
     public event Action InteractionTriggers;
 
     public override void Interact(PData player)

@@ -1,7 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Script that handles moving the player (duh).
@@ -10,7 +7,6 @@ public class PlayerMovement : PlayerSystem
 {
     private Rigidbody _rb;
     [SerializeField] private float _speed;
-    private Coroutine _footsteps;
 
     void Start()
     {
@@ -35,8 +31,6 @@ public class PlayerMovement : PlayerSystem
     /// </summary>
     public bool IsMoving()
     {
-        float v_x = _rb.linearVelocity.x;
-        float v_z = _rb.linearVelocity.z;
-        return v_x * v_x + v_z * v_z > 0.1 * 0.1;
+        return Utils.IsMoving(_rb);
     }
 }

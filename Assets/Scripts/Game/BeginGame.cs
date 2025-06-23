@@ -3,6 +3,9 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Tutorial sequence before game begins.
+/// </summary>
 public class BeginGame : MonoBehaviour
 {
     // midGame script
@@ -31,8 +34,8 @@ public class BeginGame : MonoBehaviour
     [SerializeField] private AnnouncmentBox announcmentBox;
     [SerializeField] private CanvasGroup fadeGroup;
 
-    [SerializeField] [Min(0)] private float _tutorialRepeatInteveral=10f;
-    private float _timer=0;
+    // [SerializeField] [Min(0)] private float _tutorialRepeatInteveral=10f;
+    private float _timer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,9 +48,9 @@ public class BeginGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(fadeGroup.alpha != 0) return;
+        if (fadeGroup.alpha != 0) return;
 
-        _timer+=Time.deltaTime;
+        _timer += Time.deltaTime;
 
         // increase section when no messages in Queue or module is fixed
         if (!announcmentBox._messageQueue.Any() && !isFixingModule)
@@ -144,7 +147,7 @@ public class BeginGame : MonoBehaviour
     private void teachNavigation()
     {
         teachNavMessages.AddMessages();
-        isFixingModule = true; 
+        isFixingModule = true;
         Navigation.NagivatedOnce = false;
         navigationModule.Highlight();
         // kind of spaghetti code but its being handled in the nav module class
